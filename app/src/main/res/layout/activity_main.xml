@@ -139,7 +139,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintVertical_bias="0.46000003" />
 
     <TextView
         android:id="@+id/textView4"
@@ -147,13 +147,13 @@
         android:layout_height="wrap_content"
         android:text="0"
         android:textColor="@color/TextColor"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintHorizontal_bias="0.537"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.374"></TextView>
+        app:layout_constraintVertical_bias="0.37"></TextView>
 
     <TextView
         android:id="@+id/tv_temp"
@@ -161,13 +161,13 @@
         android:layout_height="wrap_content"
         android:text="30"
         android:textColor="@color/TextColor"
-        android:textSize="50sp"
+        android:textSize="45sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.459"
+        app:layout_constraintHorizontal_bias="0.451"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.393"></TextView>
+        app:layout_constraintVertical_bias="0.389"></TextView>
 
     <ImageView
         android:layout_width="56dp"
@@ -297,24 +297,24 @@
        app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintVertical_bias="0.61"></TextView>
 
-   <TextView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="C"
         android:textColor="@color/TextColor"
-        android:textSize="40sp"
+        android:textSize="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.605"
+        app:layout_constraintHorizontal_bias="0.58"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.387"></TextView>
+        app:layout_constraintVertical_bias="0.381"></TextView>
 
     <ImageView
-        android:id="@+id/imgView_weather"
+        android:id="@+id/img_Weather"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/sun"
+        android:src="@drawable/d01d"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -343,10 +343,10 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.154" />
+        app:layout_constraintVertical_bias="0.153" />
 
     <EditText
         android:id="@+id/edt_search"
