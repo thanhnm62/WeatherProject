@@ -3,6 +3,7 @@ package com.example.weatherproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.Volley;
 
@@ -39,19 +41,35 @@ public class MainActivity extends AppCompatActivity {
     Button btnNextDay;
     TextView tvCity,tvCountry,tvTemp,tvStatus,tvTime,tvDoAm,tvApSuatKK,tvSpeedWind,tvCloud,tvTempMinMax,tvVisibility;
     ImageView imgWeather;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AnhXa();
+
         ibtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Ẩn bàn phím sau khi nhấn search
                 InputMethodManager imm=(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getRootView().getWindowToken(),0);
-                api_key(String.valueOf(edtSearch.getText()));
+                String city = edtSearch.getText().toString();
+                api_key(city);
+                if (city.equals("")){
+                    api_key("Hải Phòng");
+                }
+                else
+                    api_key(city);
+            }
+        });
+
+        btnNextDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String city = edtSearch.getText().toString();
+                Intent intent = new Intent(MainActivity.this,Main2Activity.class);
+                intent.putExtra("cityname",city);
+                startActivity(intent);
             }
         });
     }
@@ -64,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
         //RestClient : chịu trách nhiệm giao tiếp với REST service bao gồm gửi Request và nhận Response.
         //Gửi yêu cầu lên webside(sever) bằng đường dẫn (url:...) sau đó ấn build để thực thi
         // Tài liệu :https://www.vogella.com/tutorials/JavaLibrary-OkHttp/article.html
-        Request request =new Request.Builder().url("https://api.openweathermap.org/data/2.5/weather?q="+City+"&appid=c76f12f693f3f8719f79b67be13546b4&units=metric")
-//                .get()
+        Request request =new Request.Builder().url("https://api.openweathermap.org/data/2.5/weather?q="+City+"&lang=vi&appid=c76f12f693f3f8719f79b67be13546b4&units=metric")
                 .build();
         //Giải thích strictMode: https://helpex.vn/question/lam-cach-nao-de-sua-loi-android-os-networkonmainthreadexception--5cb02216ae03f645f4200743?page=2
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -92,11 +109,14 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject=new JSONObject(responseData); //Giá trị của json object này đã được đổ trong biến responseData ,chỉ cần gán biến responseData thì nó sẽ đọc đc dữ liệu bên trong json object
 
-                        setText(tvCity,City);
+                        String name = jsonObject.getString("name");
+                            setText(tvCity,name.toUpperCase());
+
                         JSONArray jsonArrayWeather=jsonObject.getJSONArray("weather");
                         JSONObject objectWeather=jsonArrayWeather.getJSONObject(0);
                         String status=objectWeather.getString("description");
-                        setStatus(tvStatus,status);
+//                        setStatus(tvStatus,status);
+                        setText(tvStatus,status.toUpperCase());
                         String icons = objectWeather.getString("icon");
                         setImage(imgWeather,icons);
 
@@ -142,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Log.d("Ketqua",responseData);
+                    Log.d("KQ",responseData);
                 }
             });
         } catch (IOException e) {
@@ -165,27 +185,27 @@ public class MainActivity extends AppCompatActivity {
                 switch (value){
                     case "01d": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d01d));
                         break;
-                    case "01n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d01d));
+                    case "01n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d01n));
                         break;
                     case "02d": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d02d));
                         break;
-                    case "02n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d02d));
+                    case "02n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d02n));
                         break;
                     case "03d": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d03d));
                         break;
-                    case "03n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d03d));
+                    case "03n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d03n));
                         break;
                     case "04d": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d04d));
                         break;
-                    case "04n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d04d));
+                    case "04n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d04n));
                         break;
                     case "09d": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d09d));
                         break;
-                    case "09n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d09d));
+                    case "09n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d09n));
                         break;
                     case "10d": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d10d));
                         break;
-                    case "10n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d10d));
+                    case "10n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d10n));
                         break;
                     case "11d": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d11d));
                         break;
@@ -195,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case "13n": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d13d));
                         break;
-                    case "50d": imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.d50d));
+                    case "50d": imgWeather.setImageResource(R.drawable.d50d);
                         break;
                     default:
                         imgWeather.setImageDrawable(getResources().getDrawable(R.drawable.fail));
@@ -203,51 +223,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void setStatus(final TextView text,final String value){
-        runOnUiThread(new Runnable(){
-            @Override
-            public void run(){
-                switch (value) {
-                    case "clear sky":
-                        text.setText("Bầu trời quang đãng");
-                        break;
-                    case "few clouds":
-                        text.setText("Hơi Có Mây");
-                        break;
-                    case "scattered clouds":
-                        text.setText("Có mây rải rác");
-                        break;
-                    case "broken clouds":
-                        text.setText("Nhiều mây");
-                        break;
-                    case "light rain":
-                        text.setText("Mưa rơi nhẹ hạt");
-                        break;
-                    case "shower rain":
-                        text.setText("Mưa rào");
-                        break;
-                    case "rain":
-                        text.setText("Mưa");
-                        break;
-                    case "thunderstorm":
-                        text.setText("Dông, có sấm chớp");
-                        break;
-                    case "snow":
-                        text.setText("Tuyết rơi");
-                        break;
-                    case "mist":
-                        text.setText("Sương mù");
-                        break;
-                    case "overcast clouds":
-                        text.setText("Nhiều mây u ám");
-                        break;
-                    default:
-                        text.setText(value);
-                      break;
-                }
-            }
-        });
-    }
+//    private void setStatus(final TextView text,final String value){
+//        runOnUiThread(new Runnable(){
+//            @Override
+//            public void run(){
+//                switch (value) {
+//                    case "clear sky":
+//                        text.setText("Bầu trời quang đãng");
+//                        break;
+//                    case "few clouds":
+//                        text.setText("Hơi Có Mây");
+//                        break;
+//                    case "scattered clouds":
+//                        text.setText("Có mây rải rác");
+//                        break;
+//                    case "broken clouds":
+//                        text.setText("Nhiều mây");
+//                        break;
+//                    case "light rain":
+//                        text.setText("Mưa rơi nhẹ hạt");
+//                        break;
+//                    case "shower rain":
+//                        text.setText("Mưa rào");
+//                        break;
+//                    case "rain":
+//                        text.setText("Mưa");
+//                        break;
+//                    case "thunderstorm":
+//                        text.setText("Dông, có sấm chớp");
+//                        break;
+//                    case "snow":
+//                        text.setText("Tuyết rơi");
+//                        break;
+//                    case "mist":
+//                        text.setText("Sương mù");
+//                        break;
+//                    case "overcast clouds":
+//                        text.setText("Nhiều mây u ám");
+//                        break;
+//                    default:
+//                        text.setText(value);
+//                      break;
+//                }
+//            }
+//        });
+//    }
     private void AnhXa() {
         edtSearch = (EditText) findViewById(R.id.edt_search);
         ibtnSearch = (ImageButton) findViewById(R.id.ibtn_seach);

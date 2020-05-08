@@ -11,7 +11,7 @@
         android:id="@+id/tv_speedwind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="30"
+        android:text="3"
         android:textColor="@color/TextColor"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,7 +25,7 @@
        android:id="@+id/tv_visiblity"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:text="31000"
+       android:text="3100"
        android:textColor="@color/TextColor"
        android:textSize="15sp"
        app:layout_constraintBottom_toBottomOf="parent"
@@ -39,7 +39,7 @@
        android:id="@+id/tv_clouds"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:text="30"
+       android:text="30%"
        android:textColor="@color/TextColor"
        android:textSize="15sp"
        app:layout_constraintBottom_toBottomOf="parent"
@@ -223,7 +223,7 @@
         android:id="@+id/tv_ap_suat_kk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10000"
+        android:text="1000"
         android:textColor="@color/TextColor"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -406,6 +406,18 @@
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintVertical_bias="0.935">
-
    </Button>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="265dp"
+        android:layout_marginRight="265dp"
+        android:layout_marginBottom="4dp"
+        android:text="Nguồn: OpenWeather."
+        android:textColor="@color/TextColor"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"></TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>
