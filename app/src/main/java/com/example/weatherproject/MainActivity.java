@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         //RestClient : chịu trách nhiệm giao tiếp với REST service bao gồm gửi Request và nhận Response.
         //Gửi request lên webside(sever) bằng đường dẫn (url:...) sau đó ấn build để thực thi
         // Tài liệu :https://www.vogella.com/tutorials/JavaLibrary-OkHttp/article.html
+
+        //Gửi yêu cầu lên sever để lấy nội dung từ đường dẫn này
         Request request =new Request.Builder().url("https://api.openweathermap.org/data/2.5/weather?q="+City+"&lang=vi&appid=c76f12f693f3f8719f79b67be13546b4&units=metric")
                 .build();
         //Giải thích strictMode: https://helpex.vn/question/lam-cach-nao-de-sua-loi-android-os-networkonmainthreadexception--5cb02216ae03f645f4200743?page=2
@@ -125,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                         JSONArray jsonArrayWeather=jsonObject.getJSONArray("weather");
                         JSONObject objectWeather=jsonArrayWeather.getJSONObject(0);
                         String status=objectWeather.getString("description");
-//                        setStatus(tvStatus,status);
                         setText(tvStatus,status.toUpperCase());
                         String icons = objectWeather.getString("icon");
                         setImage(imgWeather,icons);
