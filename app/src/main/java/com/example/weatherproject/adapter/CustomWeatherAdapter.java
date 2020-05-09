@@ -16,25 +16,32 @@ import com.example.weatherproject.model.Weather;
 
 import java.util.List;
 
+    //Adapter có nhiệm vụ là trung gian để chứa data hiển thị lên listview
 public class CustomWeatherAdapter extends ArrayAdapter<Weather> {
-    //Màn hình sử dụng giao diện này
+    //Màn hình (Main2Activity) sử dụng giao diện này
     private Context context; //Activity or context tức là màn hình hiện tại đang sử dụng layout này
-    //giao diện(layout) từng dòng muốn hiển thị -->iteam_listview là resource
+    //iteam_listview là resource
     private int resource;
     //danh sách nguồn dữ liệu muốn hiển thị lên giao diện
     private List<Weather> arrWeather;
+    //Constructor có tham số của Class CustomWeatherAdapter
     public CustomWeatherAdapter(@NonNull Context context, int resource, @NonNull List<Weather> objects) {
-        super(context, resource, objects); //this biến tham chiếu
+        super(context, resource, objects);
+        //this biến tham chiếu
         this.context = context;
         this.resource = resource;
         this.arrWeather = objects;
     }
-    //Giao diện xấu hay đẹp là do thằng GetView này, cho nên phải hiệu chỉnh nó.
+    //Giao diện(ListView) xấu hay đẹp là do thằng GetView này, cho nên phải hiệu chỉnh nó.
+    //Thằng getView này dùng để tạo ra các view rồi thêm vài Listview
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ViewHolder viewHolder;
-
+        //(View là gì : View là tất cả các TextView,ImageView, Button,layout,item,....đc hiển thị lên giao diện thì gọi là View)
+        //Nếu cái convertView == null (tức là chưa có view nào được khởi tạo (lần đầu tiên gọi tới hàm)) thì nó sẽ nhảy vào hàm này và tìm
+        //các view (cụ thể trong bài là TextView, và ImageView) với lệnh findViewById() và gán nó vào viewHolder ,sau đó thiết lập
+        //viewHolder thành thẻ của convertView.(setTag)
         if(convertView==null){
             viewHolder = new ViewHolder();
             //LayoutInflater là lớp dùng để buil cái layout bình thưởng trở thành code java mà anddroid có thể sử dụng đc
@@ -47,12 +54,20 @@ public class CustomWeatherAdapter extends ArrayAdapter<Weather> {
             viewHolder.tvItemTempMinMax = (TextView) convertView.findViewById(R.id.tv_item_temp_min_max);
             viewHolder.tvItemStatus = (TextView) convertView.findViewById(R.id.tv_item_status);
             viewHolder.tvItemDoam = (TextView) convertView.findViewById(R.id.tv_item_doam);
+
+            //set viewHolder thành tag của convertView
             convertView.setTag(viewHolder);
         }
+
+        //Các lần tiếp theo gọi tới hàm ,tức các view đã được khởi tạo và gán vào Tag , nó sẽ không phải tìm lại ID nữa mà nó sẽ lấy
+        //trực tiếp các view từ trong Tag ra và sử dụng nó như 1 thành phần của viewHolder.
+        // Tóm lại, thằng viewHolder này đc dùng để gán thẻ cho View tránh phải gọi thằng findByViewId nhiều lần, sẽ giúp vuốt listView mượt hơn.
         else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
+        //weather là đối tượng của Class Weather trong package model.
+        //Lấy ra từng đối tượng weather trong arrListWeather được truyền từ Activity1 (getpositon ở đây là vị trí của mỗi thằng trong danh sách ví dụ có 16 thằng thì nó sẽ lấy ra vị trí từ 0-15)
+        //Sau đó gán giá trị lần lượt cho 16 thằng đó.
         Weather weather = arrWeather.get(position);
         viewHolder.tvItemDay.setText(weather.getDay());
         viewHolder.tvItemThu.setText(weather.getThu());
@@ -61,6 +76,7 @@ public class CustomWeatherAdapter extends ArrayAdapter<Weather> {
         viewHolder.tvItemStatus.setText(weather.getStatus());
         viewHolder.tvItemDoam.setText(weather.getDoAm());
 
+        //Set icon theo key "icon" API trả về
         switch (weather.getIcons()){
             case "01d": viewHolder.imgItemWeather.setImageResource(R.drawable.d01d);
                 break;
@@ -99,9 +115,11 @@ public class CustomWeatherAdapter extends ArrayAdapter<Weather> {
             default:
                 viewHolder.imgItemWeather.setImageResource(R.drawable.fail);
         }
-
+        //Sau khi set dữ liệu xong thì sẽ trả ra convertView.
         return convertView;
     }
+
+    //Tạo class ViewHolder để sử dụng ở bên trên
     public class ViewHolder{
         ImageView imgItemWeather;
         TextView tvItemDay;

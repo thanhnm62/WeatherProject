@@ -34,13 +34,13 @@ public class Main2Activity extends AppCompatActivity {
     private TextView tvThanhPho;
     private ListView lvWeather;
     CustomWeatherAdapter customWeatherAdapter;
-    ArrayList<Weather> arrListWeather; //Mảng này chứa giá trị đọc đc từ adapter
+    ArrayList<Weather> arrListWeather;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         AnhXa();
-        lvWeather.setAdapter(customWeatherAdapter);
+
         Intent intent = getIntent();
         String city7day = intent.getStringExtra("cityname");
         if (city7day.equals(""))
@@ -50,9 +50,12 @@ public class Main2Activity extends AppCompatActivity {
         else
             api_key_7day(city7day);
 
+        //Sau khi customWeatherAdapter xử lí bước trung gian xong, setAdapter đó lên listView để nó hiển thị.
+        lvWeather.setAdapter(customWeatherAdapter);
     }
 
     //lấy dữ liệu API thông qua OKHTTP
+    //Hàm này dùng để lấy giá trị API (khi truyền giá trị city vào)
     private void api_key_7day (final String city_7day){
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url("https://api.openweathermap.org/data/2.5/forecast?q="+city_7day+"&units=metric&cnt=16&lang=vi&appid=91628733d74fa79baa10f0aa58daaa23")
@@ -114,15 +117,17 @@ public class Main2Activity extends AppCompatActivity {
 
                             String icons = jsonObjectWeather.getString("icon");
 
+                            //Lấy dữ liệu từ sever rồi add vào arrListWeather (16 đối tượng)
                             arrListWeather.add(new Weather(ngay,thu,gio,icons,status,tempMax+"°",tempMin+"°",doam));
                         }
+                        //Android sử dụng 2 luồng : Luồng UI , và luồng Background (chạy ngầm)
+                        //thằng runOnUiThread này thường dùng khi có sự thay đổi trên giao diện
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 customWeatherAdapter.notifyDataSetChanged();
                             }
                         });
-
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -137,7 +142,11 @@ public class Main2Activity extends AppCompatActivity {
     private void AnhXa() {
         tvThanhPho = (TextView) findViewById(R.id.tv_thanhpho);
         lvWeather = (ListView) findViewById(R.id.lv_weather);
+
+        //Khởi tạo arrListWeather truyền vào đối tượng Weather
         arrListWeather = new ArrayList<Weather>();
+
+        //Khi gọi thằng customWeatherAdapter nó sẽ truyền 1 arrListWeather sau khi đã add (16 đối tượng weather) xong sang class CustomWeatherAdapter (package adapter)
         customWeatherAdapter = new CustomWeatherAdapter(Main2Activity.this,R.layout.weather_item_listview,arrListWeather);
     }
 }

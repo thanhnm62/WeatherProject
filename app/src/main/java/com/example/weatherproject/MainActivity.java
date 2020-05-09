@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         ibtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Ẩn bàn phím sau khi nhấn search
+                //2 dòng này dùng để ẩn bàn phím sau khi nhấn search, nếu không bàn phím nó sẽ che màn hình hiển thị ở dưới
                 InputMethodManager imm=(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getRootView().getWindowToken(),0);
                 String city = edtSearch.getText().toString();
@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Sau khi click vào button "Xem các ngày tiếp theo",
+        //Khai báo biến city để lấy ra giá trị city lúc mình nhập vào từ ô seach ( ví dụ nhập Hải Phòng nó sẽ lấy ra giá trị Hải Phòng)
+        //Sau đó khởi tạo thằng intent để chuyển từ màn hình 1 sang màn hình 2
+        //put.Extra là hàm để gửi giá trị city ( đã nói ở trên) từ màn hình 1 sang màn hình thứ 2.
         btnNextDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void api_key(final String City){
         OkHttpClient client = new OkHttpClient();
-        //OkHttp là thư viện giúp chúng ta tương tác (gửi nhận dữ liệu từ app lên sever và ngược lại) tốt giữa app và sever thông qua giao thức HTTP(sử dụng internet)
-        //Dùng để đọc nội dung trên đường dẫn , đọc hình ảnh từ đường dẫn
+        //OkHttp là thư viện giúp tương tác (gửi nhận dữ liệu từ app lên sever và ngược lại) tốt giữa app và sever thông qua giao thức HTTP(cần cấp quyền internet trong manifests)
+        //Dùng để đọc nội dung trên đường dẫn , đọc hình ảnh từ đường dẫn.....
         //Request.Builder : hỗ trợ tạo request bao gồm : HTTP Method, header, cookie, media type, …
         //RestClient : chịu trách nhiệm giao tiếp với REST service bao gồm gửi Request và nhận Response.
-        //Gửi yêu cầu lên webside(sever) bằng đường dẫn (url:...) sau đó ấn build để thực thi
+        //Gửi request lên webside(sever) bằng đường dẫn (url:...) sau đó ấn build để thực thi
         // Tài liệu :https://www.vogella.com/tutorials/JavaLibrary-OkHttp/article.html
         Request request =new Request.Builder().url("https://api.openweathermap.org/data/2.5/weather?q="+City+"&lang=vi&appid=c76f12f693f3f8719f79b67be13546b4&units=metric")
                 .build();
@@ -89,26 +93,32 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         try {
             // Tạo Cuộc gọi đồng bộ, sử dụng đối tượng client để tạo ra đối tượng Call và sử dụng phương thức execute để thực hiện
+            //Hàm này có cũng được không có cũng dc thêm vào cho đủ cấu trúc OKHTTP
             Response response = client.newCall(request).execute();
+
+            //Tạo cuộc gọi không đồng bộ thông qua phương thức enqueue
             //Từ thằng đối tượng client trong OkHttpClient() gọi phương thưc newCall(tryền vào thằng request), lấy từ trong hàng đợi enqueue ra thằng CallBack
-            //Nếu lấy từ sever ra fail nó sẽ nhảy vào hàm onFailure báo ra log.e
-            //Nếu nó trả lời thì sẽ nhảy xuống hàm onResponse
-            //Cuộc gọi không đồng bộ thông qua phương thức enqueue
-            //Nếu bạn đang sử dụng Android và muốn cập nhật giao diện người dùng(UI), bạn cần sử dụng Content.runOnUiThread (new Runnable)
-            //để đồng bộ hóa với UI Thread.
+            //Nếu API từ sever trả về fail nó sẽ nhảy vào hàm onFailure báo ra log.e
+            //Nếu sever trả về giá trị thì sẽ nhảy xuống hàm onResponse
+            //Nếu đang sử dụng Android và muốn cập nhật giao diện người dùng(UI), cần sử dụng runOnUiThread (new Runnable) để đồng bộ hóa với UI Thread.
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.e("Error","Network Error");
                 }
                 @Override
-                //Tạo ra thằng responseData để hứng dữ liệu từ thằng response trả về(@NotNull Response response) lấy ra cái thân của json (body()) kiểu
+                //Tạo ra thằng responseData để hứng dữ liệu từ sever trả về(@NotNull Response response) lấy ra cái thân của json (body()) kiểu
                 //trả về là dạng chuỗi string()
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String responseData =response.body().string();
                     try {
-                        JSONObject jsonObject=new JSONObject(responseData); //Giá trị của json object này đã được đổ trong biến responseData ,chỉ cần gán biến responseData thì nó sẽ đọc đc dữ liệu bên trong json object
+                        JSONObject jsonObject=new JSONObject(responseData); //Giá trị của json object này đã được đổ trong biến responseData ,
+                        // chỉ cần gán biến responseData thì nó sẽ đọc đc dữ liệu bên trong json object
+                        //Muốn test thì comment từ đoạn try đến catch để hiển thị log . Lúc này dữ liệu nó đã trả về từ sever thông qua thằng response.body().string()
 
+
+                        //Mấy cái key này là dạng dữ liệu Json , thầy hỏi chỉ cần bảo lấy dữ liệu trả ra từ sever theo dạng chuỗi Json
+                        //sau đó gán giá trị cho các View
                         String name = jsonObject.getString("name");
                             setText(tvCity,name.toUpperCase());
 
@@ -169,6 +179,13 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    //thằng runOnUiThread này dùng để thay đổi giao diện
+    //thằng runOnUIThread này dành riêng cho việc xử lí thay đổi giao diện nặng (kiểu nhiều dữ liệu cần thay đổi)
+    //,nếu chỉ chạy trong main thread thì ứng dụng sẽ bị treo.
+    //nếu chỉ set một vài cái thì dùng main thread cũng đc. Cái nào tác vụ nặng như sét giao diện vài trăm cái.
+    // Sét ảnh bla bla thì tách ra cho tránh lỗi ARN(treo app)
+    //tài liệu : https://developer.android.com/guide/components/processes-and-threads.html#WorkerThreads
     private void setText(final TextView text, final String value) {
         runOnUiThread(new Runnable() {
             @Override
@@ -177,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    //thằng này tương tự hàm trên
     private void setImage(final ImageView imageView, final String value){
         runOnUiThread(new Runnable() {
             @Override
@@ -223,51 +241,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-//    private void setStatus(final TextView text,final String value){
-//        runOnUiThread(new Runnable(){
-//            @Override
-//            public void run(){
-//                switch (value) {
-//                    case "clear sky":
-//                        text.setText("Bầu trời quang đãng");
-//                        break;
-//                    case "few clouds":
-//                        text.setText("Hơi Có Mây");
-//                        break;
-//                    case "scattered clouds":
-//                        text.setText("Có mây rải rác");
-//                        break;
-//                    case "broken clouds":
-//                        text.setText("Nhiều mây");
-//                        break;
-//                    case "light rain":
-//                        text.setText("Mưa rơi nhẹ hạt");
-//                        break;
-//                    case "shower rain":
-//                        text.setText("Mưa rào");
-//                        break;
-//                    case "rain":
-//                        text.setText("Mưa");
-//                        break;
-//                    case "thunderstorm":
-//                        text.setText("Dông, có sấm chớp");
-//                        break;
-//                    case "snow":
-//                        text.setText("Tuyết rơi");
-//                        break;
-//                    case "mist":
-//                        text.setText("Sương mù");
-//                        break;
-//                    case "overcast clouds":
-//                        text.setText("Nhiều mây u ám");
-//                        break;
-//                    default:
-//                        text.setText(value);
-//                      break;
-//                }
-//            }
-//        });
-//    }
     private void AnhXa() {
         edtSearch = (EditText) findViewById(R.id.edt_search);
         ibtnSearch = (ImageButton) findViewById(R.id.ibtn_seach);
@@ -296,6 +269,4 @@ public class MainActivity extends AppCompatActivity {
         tvCloud.setText("");
         imgWeather = (ImageView) findViewById(R.id.img_Weather);
     }
-
-
 }
