@@ -34,6 +34,7 @@ public class CustomWeatherAdapter extends ArrayAdapter<Weather> {
     }
     //Giao diện(ListView) xấu hay đẹp là do thằng GetView này, cho nên phải hiệu chỉnh nó.
     //Thằng getView này dùng để tạo ra các view rồi thêm vài Listview
+    //GetView này là từng row trong listView
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -66,7 +67,7 @@ public class CustomWeatherAdapter extends ArrayAdapter<Weather> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         //weather là đối tượng của Class Weather trong package model.
-        //Lấy ra từng đối tượng weather trong arrListWeather được truyền từ Activity1 (getpositon ở đây là vị trí của mỗi thằng trong danh sách ví dụ có 16 thằng thì nó sẽ lấy ra vị trí từ 0-15)
+        //Lấy ra từng đối tượng weather trong arrListWeather được truyền từ Activity1 thông qua customWeatherAdapter (getpositon ở đây là vị trí của mỗi thằng trong danh sách ví dụ có 16 thằng thì nó sẽ lấy ra vị trí từ 0-15)
         //Sau đó gán giá trị lần lượt cho 16 thằng đó.
         Weather weather = arrWeather.get(position);
         viewHolder.tvItemDay.setText(weather.getDay());

@@ -3,7 +3,9 @@ package com.example.weatherproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -41,19 +43,19 @@ public class MainActivity extends AppCompatActivity {
     Button btnNextDay;
     TextView tvCity,tvCountry,tvTemp,tvStatus,tvTime,tvDoAm,tvApSuatKK,tvSpeedWind,tvCloud,tvTempMinMax,tvVisibility;
     ImageView imgWeather;
+    private String city;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AnhXa();
-
         ibtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //2 dòng này dùng để ẩn bàn phím sau khi nhấn search, nếu không bàn phím nó sẽ che màn hình hiển thị ở dưới
-                InputMethodManager imm=(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getRootView().getWindowToken(),0);
-                String city = edtSearch.getText().toString();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                city = edtSearch.getText().toString();
                 api_key(city);
                 if (city.equals("")){
                     api_key("Hải Phòng");
@@ -61,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
                 else
                     api_key(city);
             }
+
         });
+
 
         //Sau khi click vào button "Xem các ngày tiếp theo",
         //Khai báo biến city để lấy ra giá trị city lúc mình nhập vào từ ô seach ( ví dụ nhập Hải Phòng nó sẽ lấy ra giá trị Hải Phòng)
@@ -100,10 +104,12 @@ public class MainActivity extends AppCompatActivity {
 
             //Tạo cuộc gọi không đồng bộ thông qua phương thức enqueue
             //Từ thằng đối tượng client trong OkHttpClient() gọi phương thưc newCall(tryền vào thằng request), lấy từ trong hàng đợi enqueue ra thằng CallBack
-            //Nếu API từ sever trả về fail nó sẽ nhảy vào hàm onFailure báo ra log.e
-            //Nếu sever trả về giá trị thì sẽ nhảy xuống hàm onResponse
             //Nếu đang sử dụng Android và muốn cập nhật giao diện người dùng(UI), cần sử dụng runOnUiThread (new Runnable) để đồng bộ hóa với UI Thread.
+            //Sau khi gửi yêu cầu sever sẽ trả về dữ liệu sau khi đã đọc từ đường dẫn
             client.newCall(request).enqueue(new Callback() {
+                //Call Back là thằng sever phản hồi lại
+                //Nếu API từ sever trả về fail nó sẽ nhảy vào hàm onFailure báo ra log.e
+                //Nếu sever trả về giá trị thì sẽ nhảy xuống hàm onResponse
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.e("Error","Network Error");

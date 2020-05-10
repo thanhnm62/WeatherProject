@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeatherProject</string>
+    <string name="app_name">Thời tiết</string>
     <string name="haiphong">Hải Phòng</string>
     <string name="vietnam">Việt Nam</string>
 </resources>
