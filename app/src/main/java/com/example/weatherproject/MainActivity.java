@@ -11,16 +11,17 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.toolbox.Volley;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -30,6 +31,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -38,23 +41,43 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
-    EditText edtSearch;
+    AutoCompleteTextView edtSearch;
     ImageButton ibtnSearch;
     Button btnNextDay;
     TextView tvCity,tvCountry,tvTemp,tvStatus,tvTime,tvDoAm,tvApSuatKK,tvSpeedWind,tvCloud,tvTempMinMax,tvVisibility;
     ImageView imgWeather;
+
     private String city;
+    private SharedPreferences sharedPreferences;
+    public static final String PREFS_NAME = "SFWeather";
+    public static final String PREFS_SEARCH_HISTORY = "SearchHistory";
+    private Set<String> history;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AnhXa();
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        history = sharedPreferences.getStringSet(PREFS_SEARCH_HISTORY, new HashSet<String>());
+
+
+        edtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //hiển thị list thành phố được lấy ra từ sf
+                setAutoCompleteSource();
+            }
+        });
+
         ibtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //2 dòng này dùng để ẩn bàn phím sau khi nhấn search, nếu không bàn phím nó sẽ che màn hình hiển thị ở dưới
-                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+//                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+//                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 city = edtSearch.getText().toString();
                 api_key(city);
                 if (city.equals("")){
@@ -62,9 +85,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                     api_key(city);
+
+                //Thêm giá trị nhập từ bàn phím vào history (addSearchInput)
+                addSearchInput(edtSearch.getText().toString().trim());
             }
 
         });
+
 
 
         //Sau khi click vào button "Xem các ngày tiếp theo",
@@ -249,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void AnhXa() {
-        edtSearch = (EditText) findViewById(R.id.edt_search);
+        edtSearch = (AutoCompleteTextView) findViewById(R.id.edt_search);
         ibtnSearch = (ImageButton) findViewById(R.id.ibtn_seach);
         btnNextDay = (Button) findViewById(R.id.btn_next_day);
         tvCity = (TextView) findViewById(R.id.tv_city);
@@ -276,4 +303,39 @@ public class MainActivity extends AppCompatActivity {
         tvCloud.setText("");
         imgWeather = (ImageView) findViewById(R.id.img_Weather);
     }
+
+
+    private void setAutoCompleteSource()
+    {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_list_item_1, history.toArray(new String[history.size()]));
+        edtSearch.setAdapter(adapter);
+        edtSearch.setThreshold(1);
+    }
+
+    private void addSearchInput(String input)
+    {
+        if (!history.contains(input))
+        {
+            history.add(input);
+            setAutoCompleteSource();
+        }
+    }
+
+    private void savePrefs()
+    {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putStringSet(PREFS_SEARCH_HISTORY, history);
+
+        editor.commit();
+    }
+
+    protected void onStop()
+    {
+        super.onStop();
+
+        savePrefs();
+    }
+
 }
