@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     public static final String PREFS_NAME = "SFWeather";
     public static final String PREFS_SEARCH_HISTORY = "SearchHistory";
+
+    //Set là một interface kế thừa Collection interface trong java. Set trong java là một Collection không thể chứa các phần tử trùng lặp.
+    //Set được triển khai bởi Hashset,...
     private Set<String> history;
 
 
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AnhXa();
+        Log.d("Saveprefs","OnCreate");
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         history = sharedPreferences.getStringSet(PREFS_SEARCH_HISTORY, new HashSet<String>());
 
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //hiển thị list thành phố được lấy ra từ sf
                 setAutoCompleteSource();
+
             }
         });
 
@@ -88,11 +93,10 @@ public class MainActivity extends AppCompatActivity {
 
                 //Thêm giá trị nhập từ bàn phím vào history (addSearchInput)
                 addSearchInput(edtSearch.getText().toString().trim());
+
             }
 
         });
-
-
 
         //Sau khi click vào button "Xem các ngày tiếp theo",
         //Khai báo biến city để lấy ra giá trị city lúc mình nhập vào từ ô seach ( ví dụ nhập Hải Phòng nó sẽ lấy ra giá trị Hải Phòng)
@@ -305,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     private void setAutoCompleteSource()
     {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -324,17 +329,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void savePrefs()
     {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
         editor.putStringSet(PREFS_SEARCH_HISTORY, history);
-
-        editor.commit();
+        editor.apply();
     }
+    
+    public void onStop() {
 
-    protected void onStop()
-    {
         super.onStop();
-
         savePrefs();
     }
 
