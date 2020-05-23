@@ -3,7 +3,6 @@ package com.example.weatherproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -23,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import kotlin.collections.DoubleIterator;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -139,7 +137,7 @@ public class Main2Activity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    private void AnhXa() {
+    private void AnhXa()    {
         tvThanhPho = (TextView) findViewById(R.id.tv_thanhpho);
         lvWeather = (ListView) findViewById(R.id.lv_weather);
 

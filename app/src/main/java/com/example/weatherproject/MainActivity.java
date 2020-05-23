@@ -1,6 +1,13 @@
 package com.example.weatherproject;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +18,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,6 +30,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -47,21 +57,33 @@ public class MainActivity extends AppCompatActivity {
     TextView tvCity,tvCountry,tvTemp,tvStatus,tvTime,tvDoAm,tvApSuatKK,tvSpeedWind,tvCloud,tvTempMinMax,tvVisibility;
     ImageView imgWeather;
 
+
     private String city;
     private SharedPreferences sharedPreferences;
     public static final String PREFS_NAME = "SFWeather";
     public static final String PREFS_SEARCH_HISTORY = "SearchHistory";
 
     //Set là một interface kế thừa Collection interface trong java. Set trong java là một Collection không thể chứa các phần tử trùng lặp.
-    //Set được triển khai bởi Hashset,...
+    //Set được triển khai bởi Hashset,LinkedHashSet,TreeSet,EnumSet
     private Set<String> history;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         AnhXa();
+
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        findViewById(R.id.img_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setItemIconTintList(null);
+
         Log.d("Saveprefs","OnCreate");
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         history = sharedPreferences.getStringSet(PREFS_SEARCH_HISTORY, new HashSet<String>());
@@ -77,12 +99,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         ibtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //2 dòng này dùng để ẩn bàn phím sau khi nhấn search, nếu không bàn phím nó sẽ che màn hình hiển thị ở dưới
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-//                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 city = edtSearch.getText().toString();
                 api_key(city);
                 if (city.equals("")){
@@ -97,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+
 
         //Sau khi click vào button "Xem các ngày tiếp theo",
         //Khai báo biến city để lấy ra giá trị city lúc mình nhập vào từ ô seach ( ví dụ nhập Hải Phòng nó sẽ lấy ra giá trị Hải Phòng)
@@ -175,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                         int humidity = jsonObjectMain.getInt("humidity");
                         setText(tvDoAm,humidity+"%");
                         int pressure = jsonObjectMain.getInt("pressure");
-                        setText(tvApSuatKK,pressure+"");
+                        setText(tvApSuatKK,pressure+"hPa");
                         int tempMin = jsonObjectMain.getInt("temp_min");
                         int tempMax = jsonObjectMain.getInt("temp_max");
                         setText(tvTempMinMax,tempMin+"°C/"+tempMax+"°C");
@@ -197,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                         int visibility = jsonObject.getInt("visibility");
-                        setText(tvVisibility,visibility+"");
+                        setText(tvVisibility,visibility+"m");
 
 
                         String time = jsonObject.getString("dt");// trả về giá trị giây tính từ 1.1.1970 nên phải chuyển đổi sang dạng thứ ngày tháng
@@ -335,9 +361,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putStringSet(PREFS_SEARCH_HISTORY, history);
         editor.apply();
     }
-    
-    public void onStop() {
 
+    public void onStop() {
         super.onStop();
         savePrefs();
     }

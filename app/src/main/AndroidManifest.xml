@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.weatherproject">
+    package="com.example.weatherproject" >
     <!-- Fine yêu cầu GPS  cho độ chính xác cao hơn -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- COARSE không yêu cầu GPS -->
@@ -12,9 +12,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Main2Activity"></activity>
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme" >
+        <activity android:name=".Main2Activity" />
+        <activity
+            android:name=".MainActivity">
+<!--            android:theme="@style/AppTheme.NoActionBar" >-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
