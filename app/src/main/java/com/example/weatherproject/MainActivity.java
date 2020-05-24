@@ -1,5 +1,6 @@
 package com.example.weatherproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -84,10 +85,30 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_gps:
+                        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.nav_add:
+                        Toast.makeText(MainActivity.this,"add",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.nav_about:
+                        Toast.makeText(MainActivity.this,"About",Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return true;
+            }
+        });
+
+
+
         Log.d("Saveprefs","OnCreate");
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         history = sharedPreferences.getStringSet(PREFS_SEARCH_HISTORY, new HashSet<String>());
-
 
         edtSearch.setOnClickListener(new View.OnClickListener() {
             @Override
