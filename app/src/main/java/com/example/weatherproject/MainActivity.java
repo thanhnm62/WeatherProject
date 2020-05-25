@@ -32,6 +32,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.weatherproject.chatpackage.ChatActivity;
+import com.example.weatherproject.chatpackage.LoginActivity;
+import com.example.weatherproject.chatpackage.RegisterActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     Button btnNextDay;
     TextView tvCity,tvCountry,tvTemp,tvStatus,tvTime,tvDoAm,tvApSuatKK,tvSpeedWind,tvCloud,tvTempMinMax,tvVisibility;
     ImageView imgWeather;
-
 
     private String city;
     private SharedPreferences sharedPreferences;
@@ -94,11 +96,11 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.nav_add:
-                        Toast.makeText(MainActivity.this,"add",Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent1);
                         return true;
                     case R.id.nav_about:
-                        Toast.makeText(MainActivity.this,"About",Toast.LENGTH_SHORT).show();
-                        return true;
+
                 }
                 return true;
             }

@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.weatherproject"
-        minSdkVersion 15
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -42,6 +43,16 @@ dependencies {
     //gmaps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.libraries.places:places-compat:2.2.0'
+
+    //firebase SDK and Annalytic
+    implementation 'com.google.firebase:firebase-analytics:17.4.2'
+    //Glide Library
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    //For REal time databse
+    implementation 'com.google.firebase:firebase-database:19.3.0'
 
 
 }

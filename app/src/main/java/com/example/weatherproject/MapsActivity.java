@@ -43,7 +43,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-//        getSupportActionBar().setTitle("Google Map Sample");
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
