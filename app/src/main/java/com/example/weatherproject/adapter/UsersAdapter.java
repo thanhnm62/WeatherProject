@@ -1,6 +1,7 @@
 package com.example.weatherproject.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.weatherproject.chatpackage.MessageActivity;
 import com.example.weatherproject.R;
 import com.example.weatherproject.model.Users;
 
@@ -18,11 +20,11 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
     private Context context;
-    private List<Users> Users;
+    private List<Users> mUsers;
 
-    public UsersAdapter(Context context, List<com.example.weatherproject.model.Users> users) {
+    public UsersAdapter(Context context, List<Users> users) {
         this.context = context;
-        Users = users;
+        this.mUsers = users;
     }
 
 
@@ -36,7 +38,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Users users = Users.get(position);
+        final Users users = mUsers.get(position);
         holder.userName.setText(users.getUsername());
         if (users.getImageURL().equals("default")){
             holder.imageViewUser.setImageResource(R.mipmap.ic_launcher);
@@ -45,12 +47,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                     .load(users.getImageURL())
                     .into(holder.imageViewUser);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MessageActivity.class);
+                intent.putExtra("userid",users.getId());
+                context.startActivity(intent);
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return Users.size();
+        return mUsers.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

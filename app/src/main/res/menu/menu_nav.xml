@@ -11,8 +11,8 @@
             android:title="@string/menu_gps" />
         <item
             android:id="@+id/nav_add"
-            android:icon="@drawable/add"
-            android:title="@string/menu_add" />
+            android:icon="@drawable/ic_chat"
+            android:title="@string/menu_chat" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/about"
