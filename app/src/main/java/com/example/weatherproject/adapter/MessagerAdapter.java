@@ -66,7 +66,7 @@ public class MessagerAdapter extends RecyclerView.Adapter<MessagerAdapter.ViewHo
         holder.textViewMessage.setText(chat.getEdtsent());
 
         if (imgMessURL.equals("default")) {
-            holder.imageProfile.setImageResource(R.mipmap.ic_launcher);
+            holder.imageProfile.setImageResource(R.drawable.ic_profile);
         } else {
             Glide.with(context).load(imgMessURL).into(holder.imageProfile);
         }

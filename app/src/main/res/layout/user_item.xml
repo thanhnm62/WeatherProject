@@ -15,14 +15,15 @@
         app:layout_constraintStart_toEndOf="@+id/img_item_user"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_item_user"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_marginStart="16dp"
+        android:src="@drawable/ic_profile"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

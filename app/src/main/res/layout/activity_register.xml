@@ -59,6 +59,7 @@
         android:layout_marginTop="52dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
+
         android:hint="Re-Enter password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +89,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="108dp"
-        android:background="@color/colorControlActivated"
+        android:textColor="@color/places_text_white_alpha_87"
+        android:background="@drawable/garadient_registter"
         android:text="Register"
         android:textSize="20sp"
         android:textStyle="bold"

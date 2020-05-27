@@ -3,6 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
+    android:background="@drawable/gradient_toolsbar"
     android:id="@+id/toolbar_messager">
-
 </androidx.appcompat.widget.Toolbar>

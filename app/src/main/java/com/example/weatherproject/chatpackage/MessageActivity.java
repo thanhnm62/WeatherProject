@@ -32,10 +32,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MessageActivity extends AppCompatActivity {
 
     TextView tvUserNameProfile;
-    ImageView imgUserProfile;
+    CircleImageView imgUserProfile;
 
     EditText edtSentMessager;
     ImageButton ibtnSentMassager;
@@ -80,7 +82,7 @@ public class MessageActivity extends AppCompatActivity {
                 tvUserNameProfile.setText(user.getUsername());
 
                 if (user.getImageURL().equals("default")) {
-                    imgUserProfile.setImageResource(R.mipmap.ic_launcher);
+                    imgUserProfile.setImageResource(R.drawable.ic_profile);
                 } else {
                     Glide.with(MessageActivity.this)
                             .load(user.getImageURL())
@@ -111,6 +113,7 @@ public class MessageActivity extends AppCompatActivity {
         });
 
     }
+
 
     private void SentMessage(String sender, String reciver, String edtsent) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();

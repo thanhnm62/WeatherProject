@@ -6,11 +6,11 @@
     tools:context=".chatpackage.fragments.ChatsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="WelCome to ChatsFragment"
-        android:textSize="32sp"
-        android:textColor="#3700b3"/>
+        android:id="@+id/recycle_view_chat_fragment">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

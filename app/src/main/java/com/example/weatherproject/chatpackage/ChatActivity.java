@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.weatherproject.MainActivity;
 import com.example.weatherproject.R;
 import com.example.weatherproject.chatpackage.fragments.ChatsFragment;
+import com.example.weatherproject.chatpackage.fragments.ProfileFragment;
 import com.example.weatherproject.chatpackage.fragments.UsersFragment;
 import com.example.weatherproject.model.Users;
 import com.google.android.material.tabs.TabLayout;
@@ -46,34 +47,28 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        myRef = FirebaseDatabase.getInstance().getReference("MyUsers").child(firebaseUser.getUid());
         Log.i("USERRRR", firebaseUser.getUid());
 
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                ArrayList<Users> users = new ArrayList<>();
-//                for (DataSnapshot jobSnapshot: dataSnapshot.getChildren()) {
-//                    Users user = jobSnapshot.getValue(Users.class);
-//                    users.add(user);
-//                }
-//                Log.i("USERRRRR", users.size() + "");
-////                Toast.makeText(ChatActivity.this,
-////                        "User Login"+users.getUsername(),Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Users user = dataSnapshot.getValue(Users.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
-        viewPagerAdapter.addFragment(new UsersFragment(),"Users");
+        viewPagerAdapter.addFragment(new ChatsFragment(),"Chưa có gì");
+        viewPagerAdapter.addFragment(new UsersFragment(),"Messager");
+        viewPagerAdapter.addFragment(new ProfileFragment(),"Profile");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 

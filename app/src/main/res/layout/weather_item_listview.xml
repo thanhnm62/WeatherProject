@@ -6,7 +6,7 @@
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/gradien_activity"
     android:weightSum="7">
     <LinearLayout
         android:gravity="center"

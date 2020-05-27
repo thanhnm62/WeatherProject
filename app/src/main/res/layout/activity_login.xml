@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:textColor="#ffffff"
+        android:textColor="@color/places_text_white_alpha_87"
         android:text="Đăng Nhập"
         android:textStyle="bold"
         android:textSize="36sp"
