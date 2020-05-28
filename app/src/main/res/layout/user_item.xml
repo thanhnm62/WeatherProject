@@ -9,9 +9,11 @@
         android:id="@+id/tv_item_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:text="TextView"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Thành Nguyễn"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/img_item_user"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,5 +27,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
+
+    <ImageView
+    android:id="@+id/img_status_onl"
+    android:layout_width="16dp"
+    android:layout_height="16dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/img_item_user"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/status_online_png" />
+
+    <ImageView
+        android:id="@+id/img_status_off"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/img_item_user"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/status_offline" />
+
+    <TextView
+        android:id="@+id/tv_last_message"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_item_user"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_user"
+        app:layout_constraintVertical_bias="0.111" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

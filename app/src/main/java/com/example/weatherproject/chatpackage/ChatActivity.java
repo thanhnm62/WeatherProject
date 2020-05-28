@@ -31,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -88,8 +89,8 @@ public class ChatActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(ChatActivity.this,LoginActivity.class));
-//                finish();
+                startActivity(new Intent(ChatActivity.this,LoginActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 return true;
         }
         return false;
@@ -116,15 +117,40 @@ public class ChatActivity extends AppCompatActivity {
         public int getCount() {
             return fragments.size();
         }
+
         public void addFragment(Fragment fragment,String title){
             fragments.add(fragment);
             titles.add(title);
         }
+
+
 
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
             return titles.get(position);
         }
+
+    }
+
+    private void CheckStatus(String status){
+        myRef = FirebaseDatabase.getInstance().getReference("MyUsers").child(firebaseUser.getUid());
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put("status",status);
+        myRef.updateChildren(hashMap);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CheckStatus("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CheckStatus("offline");
+
     }
 }

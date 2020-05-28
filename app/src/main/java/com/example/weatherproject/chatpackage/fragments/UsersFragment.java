@@ -71,7 +71,7 @@ public class UsersFragment extends Fragment {
                         lvUsers.add(user);
                     }
 
-                    usersAdapter = new UsersAdapter(getContext(),lvUsers);
+                    usersAdapter = new UsersAdapter(getContext(),lvUsers, firebaseUser.getUid());
                     recyclerView.setAdapter(usersAdapter);
                 }
             }
@@ -82,4 +82,6 @@ public class UsersFragment extends Fragment {
             }
         });
     }
+
+
 }

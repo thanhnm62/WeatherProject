@@ -74,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
                             hashMap.put("id", userId);
                             hashMap.put("username", userName);
                             hashMap.put("imageURL", "default");
+                            hashMap.put("status","offline");
 
                             Intent intent = new Intent(RegisterActivity.this, ChatActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

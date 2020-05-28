@@ -77,13 +77,16 @@ public class ProfileFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Users users = dataSnapshot.getValue(Users.class);
-                username.setText(users.getUsername());
+                if (isAdded()) {
+                    //Load image if the fragment is currently added to its activity.
+                    Users users = dataSnapshot.getValue(Users.class);
+                    username.setText(users.getUsername());
 
-                if (users.getImageURL().equals("default")) {
-                    imageView.setImageResource(R.drawable.ic_profile);
-                } else {
-                    Glide.with(getContext()).load(users.getImageURL()).into(imageView);
+                    if (users.getImageURL().equals("default")) {
+                        imageView.setImageResource(R.drawable.ic_profile);
+                    } else {
+                        Glide.with(getContext()).load(users.getImageURL()).into(imageView);
+                    }
                 }
             }
 

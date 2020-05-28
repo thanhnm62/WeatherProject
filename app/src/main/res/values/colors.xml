@@ -5,4 +5,6 @@
     <color name="colorAccent">#8E44AD</color>
     <color name="TextColor">#2C3E50</color>
     <color name="colorControlActivated">#00B8E4</color>
+    <color name="seenMessageColor">#8F8F8F</color>
+    <color name="unseenMessageColor">#000</color>
 </resources>
