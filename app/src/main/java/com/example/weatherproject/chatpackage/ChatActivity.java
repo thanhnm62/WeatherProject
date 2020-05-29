@@ -13,11 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.example.weatherproject.MainActivity;
 import com.example.weatherproject.R;
-import com.example.weatherproject.chatpackage.fragments.ChatsFragment;
 import com.example.weatherproject.chatpackage.fragments.ProfileFragment;
 import com.example.weatherproject.chatpackage.fragments.UsersFragment;
 import com.example.weatherproject.model.Users;
@@ -67,7 +64,7 @@ public class ChatActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        viewPagerAdapter.addFragment(new ChatsFragment(),"Chưa có gì");
+        
         viewPagerAdapter.addFragment(new UsersFragment(),"Messager");
         viewPagerAdapter.addFragment(new ProfileFragment(),"Profile");
         viewPager.setAdapter(viewPagerAdapter);
