@@ -56,6 +56,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final Users users = mUsers.get(position);
         holder.userName.setText(users.getUsername());
+
         findLastMessage(myID, users.getId(), new MyCallback() {
             @Override
             public void onCallback(String value, boolean isSeen, String idSender) {
@@ -168,6 +169,5 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         }
     }
-
 
 }
