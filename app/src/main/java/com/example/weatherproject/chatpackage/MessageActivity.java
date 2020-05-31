@@ -67,6 +67,7 @@ public class MessageActivity extends AppCompatActivity {
     APIService apiService = null;
 
     boolean notify = false;
+    String status;
 
 
     @Override
@@ -100,7 +101,8 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
                 tvUserNameProfile.setText(user.getUsername());
-
+//                Toast.makeText(MessageActivity.this, "On processing", Toast.LENGTH_SHORT).show();
+                status = user.getStatus();
                 if (user.getImageURL().equals("default")) {
                     imgUserProfile.setImageResource(R.drawable.ic_profile);
                 } else {
@@ -121,7 +123,9 @@ public class MessageActivity extends AppCompatActivity {
         ibtnSentMassager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notify = true;
+                if (status.equals("offline")){
+                    notify = true;
+                }
                 String edtsent = edtSentMessager.getText().toString();
                 if (!edtsent.equals("")) {
                     SentMessage(firebaseUser.getUid(), userID, edtsent);
@@ -164,20 +168,20 @@ public class MessageActivity extends AppCompatActivity {
     }
 
 
-    private void SentMessage(String sender, final String reciver, String edtsent) {
+    private void SentMessage(String sender, final String reciver, String messager) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", sender);
         hashMap.put("reciver", reciver);
-        hashMap.put("edtsent", edtsent);
+        hashMap.put("messager", messager);
         hashMap.put("isseenSender",true);
         hashMap.put("isseenReceiver", false);
 
         reference.child("Chats").push().setValue(hashMap);
 
 
-        final String msg = edtsent;
+        final String msg = messager;
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("MyUsers").child(firebaseUser.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -195,8 +199,6 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     private void sendNotifiaction(String reciver, final String username, final String msg) {
@@ -211,7 +213,6 @@ public class MessageActivity extends AppCompatActivity {
                     Token token = snapshot.getValue(Token.class);
                     Data data = new Data(firebaseUser.getUid(), R.mipmap.ic_launcher, username+": "+msg, "New Message",
                             userID);
-
 
 
                     Sender sender = new Sender(data, token.getToken().toString());
@@ -258,7 +259,7 @@ public class MessageActivity extends AppCompatActivity {
 
                         lvChat.add(chat);
 //                        Log.i("CHATTTTT", chat + "");
-                        a = snapshot.getKey();
+//                        a = snapshot.getKey();
                     }
                     messagerAdapter = new MessagerAdapter(MessageActivity.this, lvChat, imageURL);
                     recyclerViewSent.setAdapter(messagerAdapter);

@@ -63,7 +63,7 @@ public class MessagerAdapter extends RecyclerView.Adapter<MessagerAdapter.ViewHo
     public void onBindViewHolder(@NonNull MessagerAdapter.ViewHolder holder, int position) {
 
         Chat chat = mChats.get(position);
-        holder.textViewMessage.setText(chat.getEdtsent());
+        holder.textViewMessage.setText(chat.getMessager());
 
         if (imgMessURL.equals("default")) {
             holder.imageProfile.setImageResource(R.drawable.ic_profile);

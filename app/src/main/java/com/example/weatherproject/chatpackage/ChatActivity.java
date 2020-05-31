@@ -46,22 +46,11 @@ public class ChatActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         myRef = FirebaseDatabase.getInstance().getReference("MyUsers").child(firebaseUser.getUid());
-        Log.i("USERRRR", firebaseUser.getUid());
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Users user = dataSnapshot.getValue(Users.class);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         
@@ -87,7 +76,7 @@ public class ChatActivity extends AppCompatActivity {
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(ChatActivity.this,LoginActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 return true;
         }
         return false;

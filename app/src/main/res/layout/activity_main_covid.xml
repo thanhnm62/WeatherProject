@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    tools:context=".covid19.MainCovidActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradien_activity"
+        >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Số liệu thống kê covid-19"
+                    android:textAllCaps="true"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="20dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Tổng số ca nhiễm"
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvCases"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Số ca phục hồi"
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvRecovered"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Số ca nguy kịch"
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvCritical"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Số ca đang nhiễm "
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvActive"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Số ca nhiễm mới trong ngày"
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvTodayCases"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Tổng số ca tử vong"
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvTotalDeaths"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Số ca tử vong trong ngày"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:id="@+id/tvTodayDeaths"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="2dp"
+                        android:fontFamily="sans-serif-light"
+
+                        android:text="0"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/color_one"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Số quốc gia bị ảnh hưởng"
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:id="@+id/tvAffectedCountries"
+                        android:textAlignment="textEnd"
+                        android:textSize="18sp"
+                        android:textColor="@color/color_one"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_two"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    <Button
+        android:id="@+id/btnTrack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:background="@color/color_one"
+        android:text="Theo dõi các nước"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:padding="5dp"
+        android:onClick="goTrackCountries"/>
+
+    </RelativeLayout>
+

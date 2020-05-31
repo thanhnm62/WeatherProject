@@ -35,7 +35,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     private Context context;
     private List<Users> mUsers;
     private String myID;
-    private String messageOwner;
 
     public UsersAdapter(Context context, List<Users> users, String myID) {
         this.context = context;
@@ -130,7 +129,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
                     if ((chat.getReciver().equals(myID) && chat.getSender().equals(userID)) ||
                             (chat.getReciver().equals(userID) && chat.getSender().equals(myID))) {
-                        lastMessage2 = chat.getEdtsent();
+                        lastMessage2 = chat.getMessager();
                         isSeen2 = chat.getIsseenReceiver();
                         idSender2 = chat.getSender();
                     }

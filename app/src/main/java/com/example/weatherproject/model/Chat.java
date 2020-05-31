@@ -3,7 +3,7 @@ package com.example.weatherproject.model;
 public class Chat {
     private String sender;
     private String reciver;
-    private String edtsent;
+    private String messager;
     private boolean isseenSender;
     private boolean isseenReceiver;
 
@@ -11,10 +11,10 @@ public class Chat {
 
     }
 
-    public Chat(String sender, String reciver, String edtsent, boolean isseenSender, boolean isseenReceiver) {
+    public Chat(String sender, String reciver, String messager, boolean isseenSender, boolean isseenReceiver) {
         this.sender = sender;
         this.reciver = reciver;
-        this.edtsent = edtsent;
+        this.messager = messager;
         this.isseenSender = isseenSender;
         this.isseenReceiver = isseenReceiver;
     }
@@ -35,12 +35,12 @@ public class Chat {
         this.reciver = reciver;
     }
 
-    public String getEdtsent() {
-        return edtsent;
+    public String getMessager() {
+        return messager;
     }
 
-    public void setEdtsent(String edtsent) {
-        this.edtsent = edtsent;
+    public void setMessager(String edtsent) {
+        this.messager = edtsent;
     }
 
     public boolean getIsseenSender() {
@@ -59,7 +59,5 @@ public class Chat {
         isseenReceiver = isseenReceiver;
     }
 
-    public String toString(){
-        return "(" + edtsent + ")";
-    }
+
 }

@@ -1,40 +1,30 @@
-package com.example.weatherproject;
+package com.example.weatherproject.weather;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.weatherproject.chatpackage.ChatActivity;
+import com.example.weatherproject.MapsActivity;
+import com.example.weatherproject.R;
 import com.example.weatherproject.chatpackage.LoginActivity;
-import com.example.weatherproject.chatpackage.RegisterActivity;
+import com.example.weatherproject.covid19.MainCovidActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -76,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         AnhXa();
 
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
         findViewById(R.id.img_menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent1);
                         return true;
                     case R.id.nav_about:
+                        Intent intent2 = new Intent(MainActivity.this,MainCovidActivity.class);
+                        startActivity(intent2);
 
                 }
                 return true;
@@ -170,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
         //RestClient : chịu trách nhiệm giao tiếp với REST service bao gồm gửi Request và nhận Response.
         //Gửi request lên webside(sever) bằng đường dẫn (url:...) sau đó ấn build để thực thi
         // Tài liệu :https://www.vogella.com/tutorials/JavaLibrary-OkHttp/article.html
-
         //Gửi yêu cầu lên sever để lấy nội dung từ đường dẫn này
         Request request =new Request.Builder().url("https://api.openweathermap.org/data/2.5/weather?q="+City+"&lang=vi&appid=c76f12f693f3f8719f79b67be13546b4&units=metric")
                 .build();

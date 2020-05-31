@@ -25,6 +25,9 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     @Override
 
+
+    //Kiểm tra xem thằng User hiện tại có đang được đăng nhập  hay không, nếu có thì mỗi lần click vào chat(navigation) chuyển sang màn hình Chat,
+    //luôn không phải đăng nhập lại nữa
     protected void onStart() {
         super.onStart();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -39,8 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         AnhXa();
         auth = FirebaseAuth.getInstance();
-
-
 
         //BackRegister
         btnBackRegister.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                 String emailText = edtLoginUser.getText().toString();
                 String passText = edtLoginPass.getText().toString();
 
-                if (TextUtils.isEmpty(emailText)|| TextUtils.isEmpty(passText)){
+                if (emailText.isEmpty()|| passText.isEmpty()){
                     Toast.makeText(LoginActivity.this,"Nhập đủ các trường",Toast.LENGTH_SHORT).show();
                 }
                 else {

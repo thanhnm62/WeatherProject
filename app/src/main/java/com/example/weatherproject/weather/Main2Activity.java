@@ -1,4 +1,4 @@
-package com.example.weatherproject;
+package com.example.weatherproject.weather;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.weatherproject.R;
 import com.example.weatherproject.adapter.CustomWeatherAdapter;
 import com.example.weatherproject.model.Weather;
 
