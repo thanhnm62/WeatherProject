@@ -40,10 +40,10 @@ public class CustomCovid19Adapter extends ArrayAdapter<CountryCovid> {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_custom_item_country,null,true);
         TextView tvCountryName = view.findViewById(R.id.tvCountryName);
-        ImageView imageView = view.findViewById(R.id.imageFlag);
+        ImageView imgFlag = view.findViewById(R.id.imageFlag);
 
         tvCountryName.setText(countryModelsListFiltered.get(position).getCountry());
-        Glide.with(context).load(countryModelsListFiltered.get(position).getFlag()).into(imageView);
+        Glide.with(context).load(countryModelsListFiltered.get(position).getFlag()).into(imgFlag);
 
         return view;
     }
@@ -82,7 +82,6 @@ public class CustomCovid19Adapter extends ArrayAdapter<CountryCovid> {
                     for(CountryCovid itemsModel:countryModelsList){
                         if(itemsModel.getCountry().toLowerCase().contains(searchStr)){
                             resultsModel.add(itemsModel);
-
                         }
                         filterResults.count = resultsModel.size();
                         filterResults.values = resultsModel;

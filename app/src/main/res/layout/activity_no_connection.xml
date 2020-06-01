@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#252525">
+    <ImageView
+        android:id="@+id/img_no_connection"
+        android:layout_centerInParent="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_no_connection"/>
+    <TextView
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textColor="#FFF"
+        android:text="Đang đợi mạng..."
+        android:layout_below="@+id/img_no_connection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

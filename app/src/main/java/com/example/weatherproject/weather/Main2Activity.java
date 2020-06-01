@@ -139,8 +139,8 @@ public class Main2Activity extends AppCompatActivity {
         }
     }
     private void AnhXa()    {
-        tvThanhPho = (TextView) findViewById(R.id.tv_thanhpho);
-        lvWeather = (ListView) findViewById(R.id.lv_weather);
+        tvThanhPho = findViewById(R.id.tv_thanhpho);
+        lvWeather =  findViewById(R.id.lv_weather);
 
         //Khởi tạo arrListWeather truyền vào đối tượng Weather
         arrListWeather = new ArrayList<Weather>();

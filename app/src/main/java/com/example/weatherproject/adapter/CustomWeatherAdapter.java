@@ -33,7 +33,7 @@ public class CustomWeatherAdapter extends ArrayAdapter<Weather> {
         this.arrWeather = objects;
     }
     //Giao diện(ListView) xấu hay đẹp là do thằng GetView này, cho nên phải hiệu chỉnh nó.
-    //Thằng getView này dùng để tạo ra các view rồi thêm vài Listview
+    //Thằng getView này dùng để tạo ra các view rồi thêm vào Listview
     //GetView này là từng row trong listView
     @NonNull
     @Override
@@ -48,13 +48,13 @@ public class CustomWeatherAdapter extends ArrayAdapter<Weather> {
             //LayoutInflater là lớp dùng để buil cái layout bình thưởng trở thành code java mà anddroid có thể sử dụng đc
             //Ví dụ nó sẽ chuyển thằng weather_item_listview từ thằng Textfile(xml) bình thường vào hệ thống và buil thành file coding trong bộ nhớ mà nó có thể hiểu
             convertView = LayoutInflater.from(context).inflate(R.layout.weather_item_listview,parent,false);
-            viewHolder.imgItemWeather = (ImageView) convertView.findViewById(R.id.img_item_weather);
-            viewHolder.tvItemDay = (TextView) convertView.findViewById(R.id.tv_item_day);
-            viewHolder.tvItemThu = (TextView) convertView.findViewById(R.id.tv_item_thu);
-            viewHolder.tvItemGio =(TextView) convertView.findViewById(R.id.tv_item_gio);
-            viewHolder.tvItemTempMinMax = (TextView) convertView.findViewById(R.id.tv_item_temp_min_max);
-            viewHolder.tvItemStatus = (TextView) convertView.findViewById(R.id.tv_item_status);
-            viewHolder.tvItemDoam = (TextView) convertView.findViewById(R.id.tv_item_doam);
+            viewHolder.imgItemWeather = convertView.findViewById(R.id.img_item_weather);
+            viewHolder.tvItemDay =  convertView.findViewById(R.id.tv_item_day);
+            viewHolder.tvItemThu =  convertView.findViewById(R.id.tv_item_thu);
+            viewHolder.tvItemGio = convertView.findViewById(R.id.tv_item_gio);
+            viewHolder.tvItemTempMinMax = convertView.findViewById(R.id.tv_item_temp_min_max);
+            viewHolder.tvItemStatus = convertView.findViewById(R.id.tv_item_status);
+            viewHolder.tvItemDoam = convertView.findViewById(R.id.tv_item_doam);
 
             //set viewHolder thành tag của convertView
             convertView.setTag(viewHolder);

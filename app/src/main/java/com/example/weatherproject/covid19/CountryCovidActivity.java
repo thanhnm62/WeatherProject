@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,6 +26,7 @@ import com.example.weatherproject.adapter.CustomCovid19Adapter;
 import com.example.weatherproject.model.CountryCovid;
 import com.leo.simplearcloader.SimpleArcLoader;
 
+import org.eazegraph.lib.models.PieModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CountryCovidActivity extends AppCompatActivity {
+
     EditText edtSearch;
     ListView listView;
 
@@ -45,8 +48,11 @@ public class CountryCovidActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country_covid);
+
         edtSearch = findViewById(R.id.edtSearch);
         listView = findViewById(R.id.listView);
+
+
 
 
         fetchData();
@@ -82,13 +88,6 @@ public class CountryCovidActivity extends AppCompatActivity {
 
 
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
-    }
-
     private void fetchData() {
 
         String url  = "https://corona.lmao.ninja/v2/countries/";
@@ -121,23 +120,23 @@ public class CountryCovidActivity extends AppCompatActivity {
                                 countryCovid = new CountryCovid(flagUrl,countryName,cases,todayCases,deaths,todayDeaths,recovered,active,critical);
                                 countryModelsList.add(countryCovid);
 
-
                             }
 
                             customCovid19Adapter = new CustomCovid19Adapter(CountryCovidActivity.this,countryModelsList);
                             listView.setAdapter(customCovid19Adapter);
 
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
 
+                        }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(CountryCovidActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

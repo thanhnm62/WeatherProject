@@ -7,6 +7,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -20,11 +21,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weatherproject.MapsActivity;
 import com.example.weatherproject.R;
 import com.example.weatherproject.chatpackage.LoginActivity;
 import com.example.weatherproject.covid19.MainCovidActivity;
+import com.example.weatherproject.model.CheckConnectivityCallback;
+import com.example.weatherproject.model.MyReceiver;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,12 +48,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CheckConnectivityCallback {
+    View noConnectionView;
     AutoCompleteTextView edtSearch;
     ImageButton ibtnSearch;
     Button btnNextDay;
     TextView tvCity,tvCountry,tvTemp,tvStatus,tvTime,tvDoAm,tvApSuatKK,tvSpeedWind,tvCloud,tvTempMinMax,tvVisibility;
-    ImageView imgWeather;
+    ImageView imgWeather, img_navimenu;
+    MyReceiver myReceiver;
 
     private String city;
     private SharedPreferences sharedPreferences;
@@ -64,11 +70,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        noConnectionView = findViewById(R.id.no_connection_view);
         AnhXa();
 
         final DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
-        findViewById(R.id.img_menu).setOnClickListener(new View.OnClickListener() {
+        img_navimenu = findViewById(R.id.img_menu);
+        img_navimenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -98,7 +106,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        myReceiver = new MyReceiver(MainActivity.this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(myReceiver, intentFilter);
 
         Log.d("Saveprefs","OnCreate");
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -381,4 +392,26 @@ public class MainActivity extends AppCompatActivity {
         savePrefs();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myReceiver);
+    }
+
+    @Override
+    public void setOnConnectivityChangeListener(boolean isOnline) {
+        if (isOnline){
+            noConnectionView.setVisibility(View.GONE);
+            btnNextDay.setVisibility(View.VISIBLE);
+            edtSearch.setVisibility(View.VISIBLE);
+            ibtnSearch.setVisibility(View.VISIBLE);
+            img_navimenu.setVisibility(View.VISIBLE);
+        }else {
+            noConnectionView.setVisibility(View.VISIBLE);
+            btnNextDay.setVisibility(View.GONE);
+            edtSearch.setVisibility(View.GONE);
+            ibtnSearch.setVisibility(View.GONE);
+            img_navimenu.setVisibility(View.GONE);
+        }
+    }
 }

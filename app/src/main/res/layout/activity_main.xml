@@ -16,6 +16,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradien_activity"
 >
+
      <LinearLayout
          android:id="@+id/layout_toolbar"
          android:layout_width="match_parent"
@@ -460,6 +461,12 @@
          android:textStyle="italic"
          app:layout_constraintBottom_toBottomOf="parent"
          app:layout_constraintEnd_toEndOf="parent" />
+     <include
+         android:id="@+id/no_connection_view"
+         android:visibility="gone"
+         layout="@layout/activity_no_connection"
+         android:layout_height="match_parent"
+         android:layout_width="match_parent"/>
  </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
