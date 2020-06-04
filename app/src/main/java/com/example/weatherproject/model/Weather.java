@@ -1,10 +1,9 @@
 package com.example.weatherproject.model;
 
+
 import java.io.Serializable;
 
-//Seriablible dùng để mã hóa đối tượng này và cho phép các đối tượng chuyển dữ liệu qua lại giữa các màn hinh thông qua intent
-//Thông thường các nhóm model đc phân nhóm như thế này sẽ sử dụng đến Sriablizble
-public class Weather implements Serializable {
+public class Weather {
     private String day;
     private String thu;
     private String gio;

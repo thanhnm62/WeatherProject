@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -22,6 +23,8 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
     @Override
+
+    //funcation is run when notifcation form firebase send to.
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         String sented = remoteMessage.getData().get("sented");
@@ -49,13 +52,15 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String body = remoteMessage.getData().get("body");
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
+
         Intent intent = new Intent(this, MessageActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("userid", user);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_ONE_SHOT);
+
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,(int) System.currentTimeMillis(), intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -65,14 +70,10 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setSound(defaultSound)
                 .setContentIntent(pendingIntent);
+
+        //create notification using NotificationManager class
         NotificationManager noti = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-
-        int i = 0;
-        if (j > 0){
-            i = j;
-        }
-
-        noti.notify(i, builder.build());
+        noti.notify(0, builder.build());
 
 
     }
@@ -84,25 +85,25 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String body = remoteMessage.getData().get("body");
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
+
         Intent intent = new Intent(this, MessageActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("userid", user);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         OreoNotification oreoNotification = new OreoNotification(this);
+
+        //Trong lớp Notification có một lớp Builder, lớp này dùng để tạo giao diện cho 1 thông báo.
+        //Sử dụng lớp PendingIntent để bắt sự kiện khi kích vào thông báo
         Notification.Builder builder = oreoNotification.getOreoNotification(title, body, pendingIntent,
                 defaultSound, icon);
 
-        int i = 0;
-        if (j > 0){
-            i = j;
-        }
 
-        oreoNotification.getManager().notify(i, builder.build());
+        oreoNotification.getManager().notify(0, builder.build());
 
     }
 }

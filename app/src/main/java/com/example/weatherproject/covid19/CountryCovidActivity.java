@@ -1,14 +1,9 @@
 package com.example.weatherproject.covid19;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -24,9 +19,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.weatherproject.R;
 import com.example.weatherproject.adapter.CustomCovid19Adapter;
 import com.example.weatherproject.model.CountryCovid;
-import com.leo.simplearcloader.SimpleArcLoader;
 
-import org.eazegraph.lib.models.PieModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +32,6 @@ public class CountryCovidActivity extends AppCompatActivity {
     EditText edtSearch;
     ListView listView;
 
-
     public static List<CountryCovid> countryModelsList = new ArrayList<>();
     CountryCovid countryCovid;
     CustomCovid19Adapter customCovid19Adapter;
@@ -48,15 +40,13 @@ public class CountryCovidActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country_covid);
-
         edtSearch = findViewById(R.id.edtSearch);
         listView = findViewById(R.id.listView);
 
 
-
-
         fetchData();
 
+        //item
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -87,10 +77,9 @@ public class CountryCovidActivity extends AppCompatActivity {
     }
 
 
-
     private void fetchData() {
 
-        String url  = "https://corona.lmao.ninja/v2/countries/";
+        String url = "https://corona.lmao.ninja/v2/countries/";
 
 
         StringRequest request = new StringRequest(Request.Method.GET, url,

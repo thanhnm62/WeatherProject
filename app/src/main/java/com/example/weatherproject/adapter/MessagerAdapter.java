@@ -81,13 +81,24 @@ public class MessagerAdapter extends RecyclerView.Adapter<MessagerAdapter.ViewHo
         else {
             holder.textViewSeen.setVisibility(View.GONE);
         }
-
     }
 
     @Override
     public int getItemCount() {
         return mChats.size();
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mChats.get(position).getSender().equals(firebaseUser.getUid())) {
+            return MSG_TYPE_RIGHT;
+        } else {
+            return MSG_TYPE_LEFT;
+        }
+    }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -100,16 +111,6 @@ public class MessagerAdapter extends RecyclerView.Adapter<MessagerAdapter.ViewHo
             imageProfile = itemView.findViewById(R.id.profile_image);
             textViewMessage = itemView.findViewById(R.id.show_message);
             textViewSeen = itemView.findViewById(R.id.tv_seen);
-        }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (mChats.get(position).getSender().equals(firebaseUser.getUid())) {
-            return MSG_TYPE_RIGHT;
-        } else {
-            return MSG_TYPE_LEFT;
         }
     }
 }

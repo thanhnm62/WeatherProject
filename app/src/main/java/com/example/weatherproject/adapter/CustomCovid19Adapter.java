@@ -36,6 +36,7 @@ public class CustomCovid19Adapter extends ArrayAdapter<CountryCovid> {
 
     @NonNull
     @Override
+    // Khởi tạo row
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_custom_item_country,null,true);
@@ -65,6 +66,7 @@ public class CustomCovid19Adapter extends ArrayAdapter<CountryCovid> {
     }
 
     @Override
+
     public Filter getFilter() {
         Filter filter = new Filter() {
             @Override
@@ -86,7 +88,6 @@ public class CustomCovid19Adapter extends ArrayAdapter<CountryCovid> {
                         filterResults.count = resultsModel.size();
                         filterResults.values = resultsModel;
                     }
-
 
                 }
 

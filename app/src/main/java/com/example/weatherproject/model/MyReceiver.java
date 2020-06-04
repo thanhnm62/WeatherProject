@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.weatherproject.weather.MainActivity;
 
 public class MyReceiver extends BroadcastReceiver {
+
     CheckConnectivityCallback checkConnectivityCallback;
 
     public MyReceiver(CheckConnectivityCallback checkConnectivityCallback){
@@ -18,8 +19,10 @@ public class MyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        //Phần dùng để check xem điện thoại có đang kết nối vào internet hay không
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        //
         checkConnectivityCallback.setOnConnectivityChangeListener(netInfo != null && netInfo.isConnected());
     }
 

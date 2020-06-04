@@ -21,9 +21,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.weatherproject.MapsActivity;
+import com.example.weatherproject.map.MapsActivity;
 import com.example.weatherproject.R;
 import com.example.weatherproject.chatpackage.LoginActivity;
 import com.example.weatherproject.covid19.MainCovidActivity;
@@ -56,26 +55,22 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
     TextView tvCity,tvCountry,tvTemp,tvStatus,tvTime,tvDoAm,tvApSuatKK,tvSpeedWind,tvCloud,tvTempMinMax,tvVisibility;
     ImageView imgWeather, img_navimenu;
     MyReceiver myReceiver;
+    DrawerLayout drawerLayout;
 
     private String city;
     private SharedPreferences sharedPreferences;
     public static final String PREFS_NAME = "SFWeather";
     public static final String PREFS_SEARCH_HISTORY = "SearchHistory";
-
-    //Set là một interface kế thừa Collection interface trong java. Set trong java là một Collection không thể chứa các phần tử trùng lặp.
-    //Set được triển khai bởi Hashset,LinkedHashSet,TreeSet,EnumSet
     private Set<String> history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        noConnectionView = findViewById(R.id.no_connection_view);
+
         AnhXa();
 
-        final DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-
-        img_navimenu = findViewById(R.id.img_menu);
+        //Bắt sự kiện click vào img_menu , hiển thị lên Navigation
         img_navimenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
 
+
+        // Bắt sự kiện click vào item trong navigation
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -100,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
                     case R.id.nav_about:
                         Intent intent2 = new Intent(MainActivity.this,MainCovidActivity.class);
                         startActivity(intent2);
-
                 }
                 return true;
             }
@@ -111,17 +107,20 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(myReceiver, intentFilter);
 
+
+
         Log.d("Saveprefs","OnCreate");
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
+
+        //getStringset trả về một tham chiếu đối tượng HashSet dc lưu trong sf
         history = sharedPreferences.getStringSet(PREFS_SEARCH_HISTORY, new HashSet<String>());
 
+        //Sự kiện chạm vào edtSeach
         edtSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //hiển thị list thành phố được lấy ra từ sf
                 setAutoCompleteSource();
-
             }
         });
 
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
         ibtnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //2 dòng này dùng để ẩn bàn phím sau khi nhấn search, nếu không bàn phím nó sẽ che màn hình hiển thị ở dưới
                 InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 city = edtSearch.getText().toString();
@@ -141,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
                 else
                     api_key(city);
 
-                //Thêm giá trị nhập từ bàn phím vào history (addSearchInput)
                 addSearchInput(edtSearch.getText().toString().trim());
 
             }
@@ -149,11 +146,6 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
         });
 
 
-
-        //Sau khi click vào button "Xem các ngày tiếp theo",
-        //Khai báo biến city để lấy ra giá trị city lúc mình nhập vào từ ô seach ( ví dụ nhập Hải Phòng nó sẽ lấy ra giá trị Hải Phòng)
-        //Sau đó khởi tạo thằng intent để chuyển từ màn hình 1 sang màn hình 2
-        //put.Extra là hàm để gửi giá trị city ( đã nói ở trên) từ màn hình 1 sang màn hình thứ 2.
         btnNextDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,48 +159,27 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
 
     private void api_key(final String City){
         OkHttpClient client = new OkHttpClient();
-        //OkHttp là thư viện giúp tương tác (gửi nhận dữ liệu từ app lên sever và ngược lại) tốt giữa app và sever thông qua giao thức HTTP(cần cấp quyền internet trong manifests)
-        //Dùng để đọc nội dung trên đường dẫn , đọc hình ảnh từ đường dẫn.....
-        //Request.Builder : hỗ trợ tạo request bao gồm : HTTP Method, header, cookie, media type, …
-        //RestClient : chịu trách nhiệm giao tiếp với REST service bao gồm gửi Request và nhận Response.
-        //Gửi request lên webside(sever) bằng đường dẫn (url:...) sau đó ấn build để thực thi
-        // Tài liệu :https://www.vogella.com/tutorials/JavaLibrary-OkHttp/article.html
-        //Gửi yêu cầu lên sever để lấy nội dung từ đường dẫn này
         Request request =new Request.Builder().url("https://api.openweathermap.org/data/2.5/weather?q="+City+"&lang=vi&appid=c76f12f693f3f8719f79b67be13546b4&units=metric")
                 .build();
-        //Giải thích strictMode: https://helpex.vn/question/lam-cach-nao-de-sua-loi-android-os-networkonmainthreadexception--5cb02216ae03f645f4200743?page=2
+        //Fix lỗi network on main thread exception
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         try {
-            // Tạo Cuộc gọi đồng bộ, sử dụng đối tượng client để tạo ra đối tượng Call và sử dụng phương thức execute để thực hiện
-            //Hàm này có cũng được không có cũng dc thêm vào cho đủ cấu trúc OKHTTP
-            Response response = client.newCall(request).execute();
 
-            //Tạo cuộc gọi không đồng bộ thông qua phương thức enqueue
-            //Từ thằng đối tượng client trong OkHttpClient() gọi phương thưc newCall(tryền vào thằng request), lấy từ trong hàng đợi enqueue ra thằng CallBack
-            //Nếu đang sử dụng Android và muốn cập nhật giao diện người dùng(UI), cần sử dụng runOnUiThread (new Runnable) để đồng bộ hóa với UI Thread.
-            //Sau khi gửi yêu cầu sever sẽ trả về dữ liệu sau khi đã đọc từ đường dẫn
+            client.newCall(request).execute();
+            //Cuộc gọi không đồng bộ, yêu cầu sever trả về dữ liệu
             client.newCall(request).enqueue(new Callback() {
-                //Call Back là thằng sever phản hồi lại
-                //Nếu API từ sever trả về fail nó sẽ nhảy vào hàm onFailure báo ra log.e
-                //Nếu sever trả về giá trị thì sẽ nhảy xuống hàm onResponse
+
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.e("Error","Network Error");
                 }
                 @Override
-                //Tạo ra thằng responseData để hứng dữ liệu từ sever trả về(@NotNull Response response) lấy ra cái thân của json (body()) kiểu
-                //trả về là dạng chuỗi string()
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    String responseData =response.body().string();
+                    String responseData =response.body().string(); //hứng dữ liệu sever trả về
                     try {
-                        JSONObject jsonObject=new JSONObject(responseData); //Giá trị của json object này đã được đổ trong biến responseData ,
-                        // chỉ cần gán biến responseData thì nó sẽ đọc đc dữ liệu bên trong json object
-                        //Muốn test thì comment từ đoạn try đến catch để hiển thị log . Lúc này dữ liệu nó đã trả về từ sever thông qua thằng response.body().string()
+                        JSONObject jsonObject=new JSONObject(responseData);
 
-
-                        //Mấy cái key này là dạng dữ liệu Json , thầy hỏi chỉ cần bảo lấy dữ liệu trả ra từ sever theo dạng chuỗi Json
-                        //sau đó gán giá trị cho các View
                         String name = jsonObject.getString("name");
                             setText(tvCity,name.toUpperCase());
 
@@ -251,9 +222,9 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
                         setText(tvVisibility,visibility+"m");
 
 
-                        String time = jsonObject.getString("dt");// trả về giá trị giây tính từ 1.1.1970 nên phải chuyển đổi sang dạng thứ ngày tháng
+                        String time = jsonObject.getString("dt");
                         long epkieu = Long.valueOf(time);
-                        Date date = new Date(epkieu*1000); //ép kiểu về mili giây
+                        Date date = new Date(epkieu*1000);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE dd-M-yyyy");
                         String timeDate = simpleDateFormat.format(date);
                         setText(tvTime,timeDate);
@@ -269,12 +240,6 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
         }
     }
 
-    //thằng runOnUiThread này dùng để thay đổi giao diện
-    //thằng runOnUIThread này dành riêng cho việc xử lí thay đổi giao diện nặng (kiểu nhiều dữ liệu cần thay đổi)
-    //,nếu chỉ chạy trong main thread thì ứng dụng sẽ bị treo.
-    //nếu chỉ set một vài cái thì dùng main thread cũng đc. Cái nào tác vụ nặng như sét giao diện vài trăm cái.
-    // Sét ảnh bla bla thì tách ra cho tránh lỗi ARN(treo app)
-    //tài liệu : https://developer.android.com/guide/components/processes-and-threads.html#WorkerThreads
     private void setText(final TextView text, final String value) {
         runOnUiThread(new Runnable() {
             @Override
@@ -283,7 +248,6 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
             }
         });
     }
-    //thằng này tương tự hàm trên
     private void setImage(final ImageView imageView, final String value){
         runOnUiThread(new Runnable() {
             @Override
@@ -330,37 +294,8 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
             }
         });
     }
-    private void AnhXa() {
-        edtSearch = (AutoCompleteTextView) findViewById(R.id.edt_search);
-        ibtnSearch = (ImageButton) findViewById(R.id.ibtn_seach);
-        btnNextDay = (Button) findViewById(R.id.btn_next_day);
-        tvCity = (TextView) findViewById(R.id.tv_city);
-        tvCity.setText("");
-        tvCountry = (TextView) findViewById(R.id.tv_country);
-        tvCountry.setText("");
-        tvTemp = (TextView) findViewById(R.id.tv_temp);
-        tvTemp.setText("");
-        tvStatus = (TextView) findViewById(R.id.tv_status);
-        tvStatus.setText("");
-        tvTime = (TextView) findViewById(R.id.tv_time);
-        tvTime.setText("");
-        tvDoAm = (TextView) findViewById(R.id.tv_do_am);
-        tvDoAm.setText("");
-        tvApSuatKK = (TextView) findViewById(R.id.tv_ap_suat_kk);
-        tvApSuatKK.setText("");
-        tvSpeedWind = (TextView) findViewById(R.id.tv_speedwind);
-        tvSpeedWind.setText("");
-        tvVisibility = (TextView) findViewById(R.id.tv_visiblity);
-        tvVisibility.setText("");
-        tvTempMinMax = (TextView) findViewById(R.id.tv_temp_min_max);
-        tvTempMinMax.setText("");
-        tvCloud = (TextView) findViewById(R.id.tv_clouds);
-        tvCloud.setText("");
-        imgWeather = (ImageView) findViewById(R.id.img_Weather);
-    }
 
-
-
+    // Hiển thị list history khi người dùng ấn vào sự kiện edtSearch
     private void setAutoCompleteSource()
     {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -369,6 +304,7 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
         edtSearch.setThreshold(1);
     }
 
+    //Thêm dữ liệu khi người dùng nhấn vào sự kiện btnSearch
     private void addSearchInput(String input)
     {
         if (!history.contains(input))
@@ -378,6 +314,9 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
         }
     }
 
+
+    //Hàm này dùng dễ lưu history(value) vào sf,
+    //thằng history ở trên add bao nhiều thằng thì hàm này sẽ thêm vào sf bấy nhiêu giá trị
     private void savePrefs()
     {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -413,5 +352,40 @@ public class MainActivity extends AppCompatActivity implements CheckConnectivity
             ibtnSearch.setVisibility(View.GONE);
             img_navimenu.setVisibility(View.GONE);
         }
+    }
+
+    private void AnhXa() {
+        edtSearch = (AutoCompleteTextView) findViewById(R.id.edt_search);
+        ibtnSearch = (ImageButton) findViewById(R.id.ibtn_seach);
+        btnNextDay = (Button) findViewById(R.id.btn_next_day);
+        tvCity = (TextView) findViewById(R.id.tv_city);
+        tvCity.setText("");
+        tvCountry = (TextView) findViewById(R.id.tv_country);
+        tvCountry.setText("");
+        tvTemp = (TextView) findViewById(R.id.tv_temp);
+        tvTemp.setText("");
+        tvStatus = (TextView) findViewById(R.id.tv_status);
+        tvStatus.setText("");
+        tvTime = (TextView) findViewById(R.id.tv_time);
+        tvTime.setText("");
+        tvDoAm = (TextView) findViewById(R.id.tv_do_am);
+        tvDoAm.setText("");
+        tvApSuatKK = (TextView) findViewById(R.id.tv_ap_suat_kk);
+        tvApSuatKK.setText("");
+        tvSpeedWind = (TextView) findViewById(R.id.tv_speedwind);
+        tvSpeedWind.setText("");
+        tvVisibility = (TextView) findViewById(R.id.tv_visiblity);
+        tvVisibility.setText("");
+        tvTempMinMax = (TextView) findViewById(R.id.tv_temp_min_max);
+        tvTempMinMax.setText("");
+        tvCloud = (TextView) findViewById(R.id.tv_clouds);
+        tvCloud.setText("");
+        imgWeather = (ImageView) findViewById(R.id.img_Weather);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        img_navimenu = findViewById(R.id.img_menu);
+
+        noConnectionView = findViewById(R.id.no_connection_view);
+
     }
 }

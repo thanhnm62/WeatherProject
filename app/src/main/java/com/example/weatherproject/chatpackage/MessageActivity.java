@@ -74,26 +74,12 @@ public class MessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-        tvUserNameProfile = findViewById(R.id.tv_username_profile);
-        imgUserProfile = findViewById(R.id.img_user_profile);
 
-        ibtnSentMassager = findViewById(R.id.ibtn_sent_messager);
-        edtSentMessager = findViewById(R.id.edt_sent_messager);
-
-
-        //Recycleview
-        recyclerViewSent = findViewById(R.id.recycle_view_messager);
-        recyclerViewSent.setHasFixedSize(true);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        linearLayoutManager.setStackFromEnd(true);
-        recyclerViewSent.setLayoutManager(linearLayoutManager);
-
+        AnhXa();
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
-        //Intent tu UserAdapter gui qua
         intent = getIntent();
-         userID = intent.getStringExtra("userid");
+        userID = intent.getStringExtra("userid");
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("MyUsers").child(userID);
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -101,7 +87,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
                 tvUserNameProfile.setText(user.getUsername());
-//                Toast.makeText(MessageActivity.this, "On processing", Toast.LENGTH_SHORT).show();
+
                 status = user.getStatus();
                 if (user.getImageURL().equals("default")) {
                     imgUserProfile.setImageResource(R.drawable.ic_profile);
@@ -119,7 +105,6 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        //sent mess
         ibtnSentMassager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +133,7 @@ public class MessageActivity extends AppCompatActivity {
 
                 for (DataSnapshot snapshot :dataSnapshot.getChildren()){
                     Chat chat = snapshot.getValue(Chat.class);
-//                    Log.i("CHATTTT", chat.getReciver() + "");
+
                     if (chat.getReciver().equals(firebaseUser.getUid()) && chat.getSender().equals(userID)){
                         HashMap<String,Object> hashMap = new HashMap<>();
                         hashMap.put("isseenSender",true);
@@ -164,9 +149,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-
     }
-
 
     private void SentMessage(String sender, final String reciver, String messager) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -179,7 +162,6 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("isseenReceiver", false);
 
         reference.child("Chats").push().setValue(hashMap);
-
 
         final String msg = messager;
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("MyUsers").child(firebaseUser.getUid());
@@ -200,21 +182,20 @@ public class MessageActivity extends AppCompatActivity {
         });
 
     }
-
     private void sendNotifiaction(String reciver, final String username, final String msg) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Tokens");
+        //truy vấn trong phạm vi của reciver
         Query query = reference.orderByKey().equalTo(reciver);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
                     Data data = new Data(firebaseUser.getUid(), R.mipmap.ic_launcher, username+": "+msg, "New Message",
                             userID);
 
-
+                    //Sender gửi nội dung  data, thông qua  token
                     Sender sender = new Sender(data, token.getToken().toString());
 
                     apiService.sendNotification(sender)
@@ -222,9 +203,7 @@ public class MessageActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                     if (response.code() == 200){
-                                        if (response.body().success != 1){
-                                            Toast.makeText(MessageActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-                                        }
+
                                     }
                                 }
 
@@ -235,14 +214,12 @@ public class MessageActivity extends AppCompatActivity {
                             });
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
-
     private void readMessage(final String myID, final String userID, final String imageURL) {
         lvChat = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -250,22 +227,16 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 lvChat.clear();
-                String a = "";
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
                     Chat chat = snapshot.getValue(Chat.class);
                     if ((chat.getReciver().equals(myID) && chat.getSender().equals(userID)) ||
                             (chat.getReciver().equals(userID) && chat.getSender().equals(myID))) {
-
                         lvChat.add(chat);
-//                        Log.i("CHATTTTT", chat + "");
-//                        a = snapshot.getKey();
                     }
                     messagerAdapter = new MessagerAdapter(MessageActivity.this, lvChat, imageURL);
                     recyclerViewSent.setAdapter(messagerAdapter);
 
                 }
-                Log.i("IdLastMESSAGE", a);
             }
 
             @Override
@@ -282,7 +253,6 @@ public class MessageActivity extends AppCompatActivity {
         databaseReference.updateChildren(hashMap);
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -294,5 +264,21 @@ public class MessageActivity extends AppCompatActivity {
         super.onPause();
         databaseReference.removeEventListener(seenListener);
         CheckStatus("offline");
+    }
+
+    private void AnhXa() {
+        tvUserNameProfile = findViewById(R.id.tv_username_profile);
+        imgUserProfile = findViewById(R.id.img_user_profile);
+
+        ibtnSentMassager = findViewById(R.id.ibtn_sent_messager);
+        edtSentMessager = findViewById(R.id.edt_sent_messager);
+
+
+        //Recycleview
+        recyclerViewSent = findViewById(R.id.recycle_view_messager);
+        recyclerViewSent.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerViewSent.setLayoutManager(linearLayoutManager);
     }
 }

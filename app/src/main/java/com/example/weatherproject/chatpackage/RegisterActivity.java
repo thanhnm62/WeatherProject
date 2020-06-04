@@ -59,9 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    //addOncompleteListenner dùng để lắng nghe sự kiện tạo acc thành công hay thất bại
-    //OnCompleteListener thông qua thằng task để kiểm tra xem acc tạo thành công hay fail
-    //Nếu thành công nó sẽ gán giá trị cho thằng userID thông qua hasmap.
+
     private void Register(final String userName, final String email, final String pass) {
         auth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -81,8 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                             hashMap.put("imageURL", "default");
                             hashMap.put("status", "offline");
 
-//                            finish();
-                            //Khi dữ liệu từ thằng hasmap được put vào thành công thì sẽ chuyển sang màn hình Chat
+
                             myref.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -100,8 +97,6 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
     private void AnhXa() {
         edtUser = findViewById(R.id.edt_user);
         edtPass = findViewById(R.id.edt_password);

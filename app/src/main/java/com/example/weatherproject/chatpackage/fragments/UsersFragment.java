@@ -38,21 +38,18 @@ public class UsersFragment extends Fragment {
     FirebaseUser fuser;
 
     public UsersFragment() {
-        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        fuser =FirebaseAuth.getInstance().getCurrentUser();
 
+        fuser =FirebaseAuth.getInstance().getCurrentUser();
         View view = inflater.inflate(R.layout.fragment_users,container,false);
         recyclerView = view.findViewById(R.id.recycle_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         lvUsers = new ArrayList<>();
 
         ReadUsers();
@@ -67,6 +64,7 @@ public class UsersFragment extends Fragment {
         reference.child(fuser.getUid()).setValue(token1);
     }
 
+
     private void ReadUsers() {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("MyUsers");
@@ -76,14 +74,17 @@ public class UsersFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 lvUsers.clear();
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Users user =snapshot.getValue(Users.class);
-                    assert user !=null;
-                    if (!user.getId().equals(firebaseUser.getUid())){
-                        lvUsers.add(user);
-                    }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                    usersAdapter = new UsersAdapter(getContext(),lvUsers, firebaseUser.getUid());
+                    Users user = snapshot.getValue(Users.class);
+                    if (user == null)
+                        throw new AssertionError("Không có dữ liệu user");
+                    else {
+                        if (!user.getId().equals(firebaseUser.getUid())) {
+                            lvUsers.add(user);
+                        }
+                    }
+                    usersAdapter = new UsersAdapter(getContext(), lvUsers, firebaseUser.getUid());
                     recyclerView.setAdapter(usersAdapter);
                 }
             }

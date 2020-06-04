@@ -84,14 +84,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
-
     private void AnhXa() {
-        edtLoginUser = (EditText) findViewById(R.id.edt_login_user);
-        edtLoginPass = (EditText) findViewById(R.id.edt_login_pass);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        btnBackRegister = (Button) findViewById(R.id.btn_back_register);
+        edtLoginUser = findViewById(R.id.edt_login_user);
+        edtLoginPass =  findViewById(R.id.edt_login_pass);
+        btnLogin = findViewById(R.id.btn_login);
+        btnBackRegister = findViewById(R.id.btn_back_register);
     }
 }

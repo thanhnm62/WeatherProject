@@ -1,4 +1,4 @@
-package com.example.weatherproject;
+package com.example.weatherproject.map;
 
 
 import android.Manifest;
@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.weatherproject.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -25,7 +26,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
 
@@ -35,7 +35,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     SupportMapFragment mapFrag;
     LocationRequest mLocationRequest;
     Location mLastLocation;
-    Marker mCurrLocationMarker;
     FusedLocationProviderClient mFusedLocationClient;
 
     @Override
@@ -43,9 +42,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
+        //Tạo ra một thể hiện mới của FusedLocationProviderClient sử dụng trong activity
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        //SupportMapFragment hoạt động như một thùng chứa cho bản đồ và để cung cấp quyền truy cập vào đối tượng GoogleMap.
+        //Nhận xử lí cho bản đồ bằng cách gọi hàm getSuportFragmet.finby…
+        //Sau đó sử dụng getMapAsync để đăng kí gọi lại bản đồ.
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
@@ -55,20 +57,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onPause() {
         super.onPause();
 
-        //stop location updates when Activity is no longer active
+        //Dừng update vị trí
         if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
     }
 
     @Override
+    //Hàm này được gọi khi bản đồ đã sẵn sàng để được sử dụng (thông qua MapFragment).
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
+        //LocationRequest được sử dụng để yêu cầu service cập nhập vị trí từ FuselocationProvider
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(120000); // two minute interval
+        mLocationRequest.setInterval(120000); // update vị trí 2p 1 lần
         mLocationRequest.setFastestInterval(120000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);//Balance độ chính xác khoảng 40m
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -89,19 +93,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    //Được sử dụng để nhận thông báo từ FuseLocationProviderApi khi vị trí thiết bị đã thay đổi hoặc không thể xác định được nữa.
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
+        //LocationResult được gọi khi thông tin vị trí thiết bị có sẵn
         public void onLocationResult(LocationResult locationResult) {
+            //Lấy ra các vị trí của người dùng lưu vào list, từ cũ tới mới nhất theo kinh độ và vĩ độ.
             List<Location> locationList = locationResult.getLocations();
             if (locationList.size() > 0) {
-                //The last location in the list is the newest
+                //Hàm này để lấy ra giá trị mới nhất của vị trí
                 Location location = locationList.get(locationList.size() - 1);
                 mLastLocation = location;
-                if (mCurrLocationMarker != null) {
-                    mCurrLocationMarker.remove();
-                }
 
-                //move map camera
+
+                //Di chuyển cameramap
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude)).zoom(16).build();
                 mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -145,12 +150,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }
-
+    //Ham tra ve ket qua cua phiên request permission
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
+                // Nếu 
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 

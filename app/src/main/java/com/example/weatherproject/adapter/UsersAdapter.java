@@ -58,18 +58,18 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         findLastMessage(myID, users.getId(), new MyCallback() {
             @Override
-            public void onCallback(String value, boolean isSeen, String idSender) {
+            public void onCallback(String lastMessage, boolean isSeen, String idSender) {
 
-                if (value.equals("")){
+                if (lastMessage.equals("")){
                     holder.textViewLastMessage.setVisibility(View.GONE);
                 }else {
                     holder.textViewLastMessage.setVisibility(View.VISIBLE);
                     if (idSender.equals(myID)){
-                        holder.textViewLastMessage.setText("Bạn: " + value);
+                        holder.textViewLastMessage.setText("Bạn: " + lastMessage);
                         holder.textViewLastMessage.setTextColor(ContextCompat.getColor(context, R.color.seenMessageColor));
                         holder.textViewLastMessage.setTypeface(null, Typeface.NORMAL);
                     }else {
-                        holder.textViewLastMessage.setText(value);
+                        holder.textViewLastMessage.setText(lastMessage);
                         if (isSeen) {
                             holder.textViewLastMessage.setTextColor(ContextCompat.getColor(context, R.color.seenMessageColor));
                             holder.textViewLastMessage.setTypeface(null, Typeface.NORMAL);
@@ -77,7 +77,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                             holder.textViewLastMessage.setTextColor(ContextCompat.getColor(context, R.color.unseenMessageColor));
                             holder.textViewLastMessage.setTypeface(null, Typeface.BOLD);
                         }
-
                     }
                 }
             }
@@ -90,7 +89,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                     .load(users.getImageURL())
                     .into(holder.imageViewUser);
         }
-
 
         //Status check
         if (users.getStatus().equals("online")) {
@@ -114,7 +112,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
     private void findLastMessage(final String myID, final String userID, final MyCallback myCallback) {
-//        Log.i("USERINFO", myID + " " + userID);
+
+        //Read
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

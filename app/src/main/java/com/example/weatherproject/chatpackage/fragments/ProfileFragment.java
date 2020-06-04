@@ -1,6 +1,7 @@
 package com.example.weatherproject.chatpackage.fragments;
 
 import android.app.ProgressDialog;
+import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -62,9 +63,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
         imageView = view.findViewById(R.id.profile_image2);
         username = view.findViewById(R.id.usernamer);
 
@@ -74,11 +74,12 @@ public class ProfileFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("MyUsers")
                 .child(firebaseUser.getUid());
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (isAdded()) {
-                    //Load image if the fragment is currently added to its activity.
+                    //isAdded nếu fragment đc thêm vào acctivity thì sẽ load img
                     Users users = dataSnapshot.getValue(Users.class);
                     username.setText(users.getUsername());
 
@@ -113,12 +114,13 @@ public class ProfileFragment extends Fragment {
         startActivityForResult(intent, IMAGE_REQUEST);
     }
 
-
+    //Đọc file từ hệ thống
     private String getFileExtention(Uri uri) {
         ContentResolver contentResolver = getContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
+
 
     private void UpLoadMyImage() {
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
@@ -126,8 +128,6 @@ public class ProfileFragment extends Fragment {
         progressDialog.show();
         if (imageURI != null) {
             final StorageReference fileRererence = storageReference.child(System.currentTimeMillis() + "." + getFileExtention(imageURI));
-
-
 
             upLoadTask = fileRererence.putFile(imageURI);
             upLoadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -178,7 +178,7 @@ public class ProfileFragment extends Fragment {
             imageURI = data.getData();
 
             if (upLoadTask !=null && upLoadTask.isInProgress()){
-                Toast.makeText(getContext(),"Uploading in progress",Toast.LENGTH_SHORT).show();
+
             }else {
                 UpLoadMyImage();
             }

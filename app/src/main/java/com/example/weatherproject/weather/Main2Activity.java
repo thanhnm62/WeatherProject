@@ -53,11 +53,11 @@ public class Main2Activity extends AppCompatActivity {
         lvWeather.setAdapter(customWeatherAdapter);
     }
 
-    //lấy dữ liệu API thông qua OKHTTP
-    //Hàm này dùng để lấy giá trị API (khi truyền giá trị city vào)
+
     private void api_key_7day (final String city_7day){
+        String api7d = "https://api.openweathermap.org/data/2.5/forecast?q="+city_7day+"&units=metric&cnt=16&lang=vi&appid=91628733d74fa79baa10f0aa58daaa23";
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url("https://api.openweathermap.org/data/2.5/forecast?q="+city_7day+"&units=metric&cnt=16&lang=vi&appid=91628733d74fa79baa10f0aa58daaa23")
+        Request request = new Request.Builder().url(api7d)
                 .build();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -131,7 +131,6 @@ public class Main2Activity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Log.d("Ketqua",reponseData);
                 }
             });
         } catch (IOException e) {

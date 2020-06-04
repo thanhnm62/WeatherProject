@@ -37,7 +37,7 @@ public class MainCovidActivity extends AppCompatActivity {
     private void getDataCovid19(){
         OkHttpClient client = new OkHttpClient();
 
-        Request request =new okhttp3.Request.Builder().url("https://corona.lmao.ninja/v2/all/")
+        Request request =new Request.Builder().url("https://corona.lmao.ninja/v2/all/")
                 .build();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
